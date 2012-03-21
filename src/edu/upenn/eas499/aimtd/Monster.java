@@ -5,7 +5,7 @@ package edu.upenn.eas499.aimtd;
  * @author fedenusy
  *
  */
-class Monster {
+public class Monster {
 
 	// Instance variables
 	private int x, y;

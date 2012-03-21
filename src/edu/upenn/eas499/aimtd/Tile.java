@@ -7,10 +7,11 @@ package edu.upenn.eas499.aimtd;
  */
 class Tile {
 	
-	// Monsters travel over ROAD tiles.
+	// Monsters travel over ROAD tiles in an attempt to reach
+	// an OBJECTIVE tile.
 	// Towers can be built on FIELD tiles.
 	// ROCK tiles represent dead space.
-	public enum Type { ROAD, FIELD, ROCK }
+	public enum Type { ROAD, OBJECTIVE, FIELD, ROCK }
 	
 	
 	// Instance variables
@@ -23,10 +24,18 @@ class Tile {
 	public int getY() { return y; }
 	
 	
-	public Tile(Type type, int x, int y) {
+	public Tile(int x, int y, Type type) {
+		if (type==null) throw new IllegalArgumentException("Invalid Tile.Type for Tile instance");
 		this.type = type;
 		this.x = x;
 		this.y = y;
+	}
+	
+	/**
+	 * @return Whether this is a Road or Objective type Tile.
+	 */
+	public boolean isWalkable() {
+		return (type.equals(Type.ROAD) || type.equals(Type.OBJECTIVE));
 	}
 	
 }
