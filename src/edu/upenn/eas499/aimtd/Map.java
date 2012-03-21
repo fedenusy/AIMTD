@@ -37,12 +37,12 @@ public class Map {
 		for (int i=0; i<length; i++) {
 			for (int j=0; j<width; j++) {
 				try {
-					if (layout[i][j]==0) tiles[i][j] = new Tile(j, i, Tile.Type.FIELD);
-					else if (layout[i][j]==1) tiles[i][j] = new Tile(j, i, Tile.Type.ROAD);
-					else if (layout[i][j]==2) tiles[i][j] = new Tile(j, i, Tile.Type.OBJECTIVE);
-					else tiles[i][j] = new Tile(j, i, Tile.Type.ROCK);
+					if (layout[i][j]==0) tiles[j][i] = new Tile(j, i, Tile.Type.FIELD);
+					else if (layout[i][j]==1) tiles[j][i] = new Tile(j, i, Tile.Type.ROAD);
+					else if (layout[i][j]==2) tiles[j][i] = new Tile(j, i, Tile.Type.OBJECTIVE);
+					else tiles[j][i] = new Tile(j, i, Tile.Type.ROCK);
 				} catch (ArrayIndexOutOfBoundsException e) {
-					tiles[i][j] = new Tile(j, i, Tile.Type.ROCK);
+					tiles[j][i] = new Tile(j, i, Tile.Type.ROCK);
 				}
 			}
 		}
@@ -59,10 +59,10 @@ public class Map {
 		if (createEdges) for (Tile walkable : edges.keySet()) {
 			int x = walkable.getX();
 			int y = walkable.getY();
-			for (int offY=-1; offY<=1; offY++) {
-				for (int offX=-1; offX<=1; offX++) {
+			for (int offX=-1; offX<=1; offX++) {
+				for (int offY=-1; offY<=1; offY++) {
 					try {
-						Tile candidate = tiles[y+offY][x+offX];
+						Tile candidate = tiles[x+offX][y+offY];
 						if (!candidate.isWalkable()) continue;
 						edges.get(walkable).add(candidate);
 					} catch (ArrayIndexOutOfBoundsException e) { }
@@ -80,7 +80,7 @@ public class Map {
 	 */
 	public boolean createEdge(int x1, int y1, int x2, int y2, boolean biDirectional) {
 		try {
-			Tile one = tiles[y1][x1], two = tiles[y2][x2];
+			Tile one = tiles[x1][y1], two = tiles[x2][y2];
 			if (!one.isWalkable() || !two.isWalkable()) return false;
 			edges.get(one).add(two);
 			if (biDirectional) edges.get(two).add(one);
