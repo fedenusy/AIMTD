@@ -12,7 +12,7 @@ public class Map {
 
 	// Instance variables
 	Tile[][] tiles;
-	HashMap<Tile, ArrayList<Edge>> edges;
+	HashMap<Tile, ArrayList<Tile>> edges;
 	
 	/**
 	 * Instantiates the TD map.
@@ -47,12 +47,12 @@ public class Map {
 			}
 		}
 		
-		edges = new HashMap<Tile, ArrayList<Edge>>();
+		edges = new HashMap<Tile, ArrayList<Tile>>();
 		
 		for (int i=0; i<length; i++) {
 			for (int j=0; j<width; j++) {
 				if(tiles[i][j].isWalkable()) 
-					edges.put(tiles[i][j], new ArrayList<Edge>());
+					edges.put(tiles[i][j], new ArrayList<Tile>());
 			}
 		}
 
@@ -64,7 +64,7 @@ public class Map {
 					try {
 						Tile candidate = tiles[y+offY][x+offX];
 						if (!candidate.isWalkable()) continue;
-						edges.get(walkable).add(new Edge(walkable, candidate));
+						edges.get(walkable).add(candidate);
 					} catch (ArrayIndexOutOfBoundsException e) { }
 				}
 			}
@@ -72,5 +72,27 @@ public class Map {
 
 	}
 	
+	/**
+	 * Creates an Edge from (x1,y1) to (x2,y2), thus allowing Monsters to travel between 
+	 * the two Tiles.
+	 * @param biDirectional Whether another edge should be created from (x2,y2) to (x1,y1).
+	 * @return Whether the edge was successfully created.
+	 */
+	public boolean createEdge(int x1, int y1, int x2, int y2, boolean biDirectional) {
+		try {
+			Tile one = tiles[y1][x1], two = tiles[y2][x2];
+			if (!one.isWalkable() || !two.isWalkable()) return false;
+			edges.get(one).add(two);
+			if (biDirectional) edges.get(two).add(one);
+			return true;
+		} catch (ArrayIndexOutOfBoundsException e) { return false; }
+	}
+	
+	/**
+	 * @return The Euclidean distance between coordinates.
+	 */
+	public double distanceBetween(int x1, int y1, int x2, int y2) {
+		return Math.sqrt((x1-x2)^2+(y1-y2)^2);
+	}
 	
 }
