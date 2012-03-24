@@ -25,7 +25,7 @@ public class Coordinator {
 	}
 	
 	/**
-	 * Adds a Monster that will be guided by the Coordinator.
+	 * Adds a Monster that will be guided by the Coordinator's tick() decisions.
 	 * @param monster
 	 */
 	public void addMonster(Monster monster) {
@@ -33,7 +33,7 @@ public class Coordinator {
 	}
 	
 	/**
-	 * Adds a Tower whose projectiles will be considered in the Coordinator's decisions.
+	 * Adds a Tower to be considered in the Coordinator's tick() decisions.
 	 * @param tower
 	 */
 	public void addTower(Tower tower) {

@@ -111,5 +111,18 @@ public class Map {
 		return edges.get(tiles[t.getX()][t.getY()]);
 	}
 	
+	/**
+	 * @param x
+	 * @param y
+	 * @return The Tile at the specified (x,y) position, or null if the coordinate is out of
+	 * bounds.
+	 */
+	public Tile getTile(int x, int y) {
+		try {
+			return tiles[x][y];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return null;
+		}
+	}
 	
 }
