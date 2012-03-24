@@ -46,7 +46,7 @@ public class Map {
 		
 		int length = layout.length;
 		int width = layout[0].length;
-		tiles = new Tile[length][width];
+		tiles = new Tile[width][length];
 		
 		for (int i=0; i<length; i++) {
 			for (int j=0; j<width; j++) {
@@ -63,8 +63,8 @@ public class Map {
 		
 		edges = new HashMap<Tile, ArrayList<Tile>>();
 		
-		for (int i=0; i<length; i++) {
-			for (int j=0; j<width; j++) {
+		for (int i=0; i<width; i++) {
+			for (int j=0; j<length; j++) {
 				if(tiles[i][j].isWalkable()) 
 					edges.put(tiles[i][j], new ArrayList<Tile>());
 			}
