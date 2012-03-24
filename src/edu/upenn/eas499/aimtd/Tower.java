@@ -6,7 +6,7 @@ package edu.upenn.eas499.aimtd;
  * @author fedenusy
  *
  */
-public class Tower {
+public abstract class Tower {
 	
 	// Instance variables
 	private int x, y;
