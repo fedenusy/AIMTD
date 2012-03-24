@@ -16,13 +16,25 @@ public class Map {
 	HashMap<Tile, ArrayList<Tile>> edges;
 	
 	/**
-	 * Instantiates the TD map.
-	 * @param layout The layout of the map represented as an array of rows, which are themselves arrays 
+	 * Convenience method, identical to Map(int[][] layout, true).
+	 * @param layout The map's layout.
+	 */
+	public Map(int[][] layout) {
+		this(layout, true);
+	}
+	
+	/**
+	 * @param layout The layout of the map represented as an array of rows; rows are themselves arrays 
 	 * of integers. Within rows, 0s represent Field tiles (upon which towers can be built), 1s 
 	 * represent Road tiles (upon which monsters can travel), and 2s represent Objective tiles (which 
 	 * monsters are trying to reach). 8s represent Rock tiles, which are dead space. For AIMTD's purposes, 
 	 * the map will be built as a square with length=(# of row arrays) and width=(# of integers in the first row). 
-	 * Undefined row integers will be treated as Rocks.
+	 * Undefined row integers will be treated as Rocks. Example 5x5 map layout:
+	 * new int[][] {	{1,1,0,0,0},
+	 * 					{0,1,8,0,0},
+	 * 					{0,1,1,8,0},
+	 * 					{0,0,0,1,0},
+	 * 					{0,0,0,0,2} };
 	 * @param createEdges Whether to automatically generate the edges between Road/Objective tiles and other 
 	 * adjacent Road/Objective tiles, including diagonals. Monsters can only travel between two Road/Objective tiles 
 	 * if there exists an edge between them.
@@ -98,12 +110,5 @@ public class Map {
 		return edges.get(tiles[x][y]);
 	}
 	
-	
-	/**
-	 * @return The Euclidean distance between coordinates.
-	 */
-	public static double distanceBetween(int x1, int y1, int x2, int y2) {
-		return Math.sqrt((x1-x2)^2+(y1-y2)^2);
-	}
 	
 }

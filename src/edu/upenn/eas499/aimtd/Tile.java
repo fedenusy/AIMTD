@@ -38,4 +38,12 @@ class Tile {
 		return (type.equals(Type.ROAD) || type.equals(Type.OBJECTIVE));
 	}
 	
+	/**
+	 * @param t The destination tile.
+	 * @return The Euclidean distance between this tile and t.
+	 */
+	public double distanceTo(Tile t) {
+		return Math.sqrt((x-t.getX())^2+(y-t.getY())^2);
+	}
+	
 }
