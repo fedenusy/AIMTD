@@ -9,8 +9,7 @@ public class MapTest {
 
 	private int[][] layout15x15, layout20x20, layout15x10, layout25x25;
 	
-	@Before
-	public void setUp() {
+	@Before public void setUp() {
 		int[][] layout15x15 = 
 				new int[][]{	{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
 								{1,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -85,9 +84,12 @@ public class MapTest {
 								{0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0} };
 	}
 	
-	@Test
-	public void testMapConstruction() {
+	@Test public void testMapConstruction() {
 		Map map1 = new Map(layout15x15, true);
+		Map map2 = new Map(layout20x20, true);
+		Map map3 = new Map(layout15x10, true);
+		Map map4 = new Map(layout25x25, true);
+		
 		
 	}
 	

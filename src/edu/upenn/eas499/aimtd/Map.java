@@ -1,6 +1,7 @@
 package edu.upenn.eas499.aimtd;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -89,9 +90,19 @@ public class Map {
 	}
 	
 	/**
+	 * @param x The tile's x-coordinate.
+	 * @param y The tile's y-coordinate.
+	 * @return A collection of all neighboring Tiles.
+	 */
+	public Collection<Tile> getNeighbors(int x, int y) {
+		return edges.get(tiles[x][y]);
+	}
+	
+	
+	/**
 	 * @return The Euclidean distance between coordinates.
 	 */
-	public double distanceBetween(int x1, int y1, int x2, int y2) {
+	public static double distanceBetween(int x1, int y1, int x2, int y2) {
 		return Math.sqrt((x1-x2)^2+(y1-y2)^2);
 	}
 	
