@@ -13,15 +13,18 @@ public class Coordinator {
 	private Map map;
 	private ArrayList<Monster> monsters;
 	private ArrayList<Tower> towers;
+	private int intelligenceLevel;
 	
 	// Public methods
 	/**
 	 * @param map The map over which the coordinator should base its decisions.
 	 */
-	public Coordinator(Map map) {
+	public Coordinator(Map map, int intelligenceLevel) {
 		this.map = map;
 		this.monsters = new ArrayList<Monster>();
 		this.towers = new ArrayList<Tower>();
+		this.intelligenceLevel = intelligenceLevel;
+		if (intelligenceLevel != 1) this.intelligenceLevel = 1;
 	}
 	
 	/**
@@ -47,7 +50,16 @@ public class Coordinator {
 	 * their relationship to tick().
 	 */
 	public void tick() {
-		
+		if (intelligenceLevel == 1) {
+			for (Monster monster : monsters) aStarMove(monster);
+		}
+	}
+	
+	// Private methods
+	private void aStarMove(Monster monster) {
+		double xPos = monster.getX();
+		double yPos = monster.getY();
+		Tile start = map.getTile((int) Math.round(xPos), (int) Math.round(yPos));
 	}
 	
 }

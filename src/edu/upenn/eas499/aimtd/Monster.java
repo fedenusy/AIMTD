@@ -12,6 +12,12 @@ public abstract class Monster {
 	private int hp;
 	private int moveSpeed;
 	
+	// Getter methods
+	public double getX() { return x; }
+	public double getY() { return y; }
+	public int getHp() { return hp; }
+	public int getSpeed() { return moveSpeed; }
+	
 	// Public methods
 	/**
 	 * @param x The monster's initial x-position.
@@ -28,6 +34,12 @@ public abstract class Monster {
 		this.y = y;
 		this.hp = hp;
 		this.moveSpeed = moveSpeed;
+	}
+	
+	// Final methods
+	protected final void move(double x, double y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 }
