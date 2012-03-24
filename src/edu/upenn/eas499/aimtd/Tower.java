@@ -11,15 +11,16 @@ public abstract class Tower {
 	// Instance variables
 	private int x, y;
 	private int fireDamage;
-	private int firingRate;
-	private int firingRange;
+	private int fireSpeed;
+	private int fireRange;
 	
 	// Public methods
-	public Tower(int x, int y, int fireDamage, int firingRate, int firingRange) {
+	public Tower(int x, int y, int fireDamage, int firingRate, int fireRange) {
 		this.x = x;
 		this.y = y;
 		this.fireDamage = fireDamage;
-		this.firingRate = firingRate;
+		this.fireSpeed = firingRate;
+		this.fireRange = fireRange;
 	}
 	
 	/**
@@ -28,7 +29,7 @@ public abstract class Tower {
 	 * @return Whether this tower's projectiles reach the given coordinates.
 	 */
 	public boolean reaches(int x, int y) {
-		return (firingRange >= Math.sqrt((this.x-x)^2-(this.y-y)^2));
+		return (fireRange >= Math.sqrt((this.x-x)^2-(this.y-y)^2));
 	}
 	
 }

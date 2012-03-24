@@ -10,14 +10,14 @@ public abstract class Monster {
 	// Instance variables
 	private double x, y;
 	private int hp;
-	private int speed;
+	private int moveSpeed;
 	
 	// Public methods
-	public Monster(int x, int y, int hp, int speed) {
+	public Monster(int x, int y, int hp, int moveSpeed) {
 		this.x = x;
 		this.y = y;
 		this.hp = hp;
-		this.speed = speed;
+		this.moveSpeed = moveSpeed;
 	}
 	
 }

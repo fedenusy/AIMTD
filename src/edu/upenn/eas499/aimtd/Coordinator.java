@@ -43,8 +43,8 @@ public class Coordinator {
 	/**
 	 * This method should be called each time the Coordinator has to make Monsters move(). The
 	 * Coordinator assumes Towers will fire their projectiles immediately after tick() is called.
-	 * See Monster and Tower for field definitions of speed and firingSpeed, respectively, and their
-	 * relationship to tick().
+	 * See Monster and Tower classes for definitions of moveSpeed and fireSpeed, respectively, and 
+	 * their relationship to tick().
 	 */
 	public void tick() {
 		
