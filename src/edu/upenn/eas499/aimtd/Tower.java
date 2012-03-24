@@ -14,6 +14,7 @@ public class Tower {
 	private int firingRate;
 	private int firingRange;
 	
+	// Public methods
 	public Tower(int x, int y, int fireDamage, int firingRate, int firingRange) {
 		this.x = x;
 		this.y = y;

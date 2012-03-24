@@ -15,6 +15,7 @@ public class Map {
 	Tile[][] tiles;
 	HashMap<Tile, ArrayList<Tile>> edges;
 	
+	// Public methods
 	/**
 	 * Convenience method, identical to Map(int[][] layout, true).
 	 * @param layout The map's layout.
@@ -106,8 +107,8 @@ public class Map {
 	 * @param y The tile's y-coordinate.
 	 * @return A collection of all neighboring Tiles.
 	 */
-	public Collection<Tile> getNeighbors(int x, int y) {
-		return edges.get(tiles[x][y]);
+	public Collection<Tile> getNeighbors(Tile t) {
+		return edges.get(tiles[t.getX()][t.getY()]);
 	}
 	
 	

@@ -23,7 +23,7 @@ class Tile {
 	public int getX() { return x; }
 	public int getY() { return y; }
 	
-	
+	// Public methods
 	public Tile(int x, int y, Type type) {
 		if (type==null) throw new IllegalArgumentException("Invalid Tile.Type for Tile instance");
 		this.type = type;

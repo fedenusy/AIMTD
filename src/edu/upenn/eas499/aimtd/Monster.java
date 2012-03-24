@@ -8,10 +8,11 @@ package edu.upenn.eas499.aimtd;
 public class Monster {
 
 	// Instance variables
-	private int x, y;
+	private double x, y;
 	private int hp;
 	private int speed;
 	
+	// Public methods
 	public Monster(int x, int y, int hp, int speed) {
 		this.x = x;
 		this.y = y;
