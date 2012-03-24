@@ -15,6 +15,15 @@ public abstract class Tower {
 	private int fireRange;
 	
 	// Public methods
+	/**
+	 * @param x The tower's x-position.
+	 * @param y The tower's y-position.
+	 * @param fireDamage Damage from a single projectile, in terms of Monster hit points.
+	 * @param firingRate Speed at which the tower fires. A speed of 10 means the tower can
+	 * fire a single projectile within a call of Coordinator.tick(); a speed of 20 means the
+	 * tower can fire off 2 projectiles within a single tick.
+	 * @param fireRange The tower's firing radius.
+	 */
 	public Tower(int x, int y, int fireDamage, int firingRate, int fireRange) {
 		this.x = x;
 		this.y = y;
