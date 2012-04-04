@@ -11,6 +11,7 @@ public abstract class Monster {
 	private float _x, _y;
 	private int _hp;
 	private int _moveSpeed;
+	private Tile objective;
 	
 	
 	///// Constructors /////
@@ -37,10 +38,12 @@ public abstract class Monster {
 	public float getY() { return _y; }
 	public int getHp() { return _hp; }
 	public int getSpeed() { return _moveSpeed; }
+	public int getRoundedX() { return Math.round(_x); }
+	public int getRoundedY() { return Math.round(_y); }
 	
 	
 	///// Public methods /////
-	
+
 	
 	
 	///// Final methods /////

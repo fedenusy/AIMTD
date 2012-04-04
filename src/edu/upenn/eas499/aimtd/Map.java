@@ -54,6 +54,7 @@ public class Map {
 		_edges = new HashMap<Tile, ArrayList<Tile>>();
 		generateNodes();
 		if (generateEdges) generateEdges();
+		eliminateLoops();
 	}
 	
 	
@@ -134,6 +135,17 @@ public class Map {
 					}
 				}
 			}
+		}
+	}
+	
+	private void eliminateLoops() {
+		for (Tile node : _edges.keySet()) {
+			ArrayList<Tile> neighbors = _edges.get(node);
+			boolean stillRemoving = true;
+			while (stillRemoving) {
+				stillRemoving = neighbors.remove(node);
+			}
+			_edges.put(node, neighbors);
 		}
 	}
 	

@@ -53,17 +53,39 @@ public class Coordinator {
 	 * their relationship to tick().
 	 */
 	public void tick() {
-		if (_intelligenceLevel == 1) {
-			for (Monster monster : _monsters) aStarMove(monster);
+		for (Monster monster : _monsters) {
+			if (_intelligenceLevel == 1) shortestPathMove(monster);
+			else if (_intelligenceLevel == 2) survivalAwareMove(monster);
+			else if (_intelligenceLevel == 3) groupTacticMove(monster);
 		}
 	}
 	
 	
 	///// Private methods /////
-	private void aStarMove(Monster monster) {
-		float xPos = monster.getX();
-		float yPos = monster.getY();
-		Tile start = _map.getTile(Math.round(xPos), Math.round(yPos));
+	/**
+	 * Moves the Monster along the shortest path towards its objective.
+	 */
+	private void shortestPathMove(Monster monster) {
+		int xPos = monster.getRoundedX();
+		int yPos = monster.getRoundedY();
+		Tile start = _map.getTile(xPos, yPos);
 	}
 	
+	/**
+	 * Considers each path towards the Monster's objective, weighing the total amount of Tower damage that
+	 * would be sustained along each trail. Paths that are likely to get the Monster killed are discarded
+	 * from consideration. The Monster is then moved along the shortest such remaining path.
+	 * If all paths are likely to get the Monster killed, this method becomes analogous to shortestPathMove().
+	 */
+	private void survivalAwareMove(Monster monster) {
+		
+	}
+	
+	/**
+	 * Similar to survivalAwareMove(), except Monsters now take their team mates into consideration, along with
+	 * their ability to draw Tower damage as they traverse a given path.
+	 */
+	private void groupTacticMove(Monster monster) {
+		
+	}
 }
