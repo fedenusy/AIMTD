@@ -19,7 +19,7 @@ class Tile implements Comparator<Tile> {
 	///// Instance variables /////
 	private Type _type;
 	private int _x, _y;
-	private int _cost;
+	private double _cost;
 	private Tile _previous;
 	
 	
@@ -29,7 +29,7 @@ class Tile implements Comparator<Tile> {
 		_type = type;
 		_x = x;
 		_y = y;
-		_cost = Integer.MAX_VALUE;
+		_cost = Double.MAX_VALUE;
 	}
 	
 	
@@ -37,12 +37,12 @@ class Tile implements Comparator<Tile> {
 	Type getType() { return _type; }
 	int getX() { return _x; }
 	int getY() { return _y; }
-	int getCost() { return _cost; }
+	double getCost() { return _cost; }
 	Tile getPrevious() { return _previous; }
 	
 	
 	///// Setter methods /////
-	void setCost(int cost) { _cost = cost; }
+	void setCost(double cost) { _cost = cost; }
 	void setPrevious(Tile previous) { _previous = previous; }
 	
 	

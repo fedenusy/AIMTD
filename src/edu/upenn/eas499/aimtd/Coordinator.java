@@ -75,16 +75,22 @@ public class Coordinator {
 		
 		while (!nodeQueue.isEmpty()) {
 			Tile node = nodeQueue.poll();
-			if (node.getCost() == Integer.MAX_VALUE) break;
+			if (node.getCost() == Double.MAX_VALUE) break;
 			for (Tile neighbor : _map.getNeighbors(node)) {
-				
+				double altCost = node.getCost() + node.distanceTo(neighbor);
+				if (altCost < neighbor.getCost()) {
+					nodeQueue.remove(neighbor);
+					neighbor.setCost(altCost);
+					neighbor.setPrevious(node);
+					nodeQueue.add(neighbor);
+				}
 			}
 		}
 	}
 	
 	private Collection<Tile> initializeNodes(Monster monster) {
 		Collection<Tile> nodes = _map.getNodes();
-		for (Tile node : nodes) node.setCost(Integer.MAX_VALUE);
+		for (Tile node : nodes) node.setCost(Double.MAX_VALUE);
 		Tile source = getSource(monster);
 		nodes.remove(source);
 		source.setCost(0);
