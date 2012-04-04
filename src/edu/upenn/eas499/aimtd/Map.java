@@ -96,6 +96,12 @@ public class Map {
 	}
 	
 	
+	///// Package-protected methods /////
+	Collection<Tile> getNodes() {
+		return _edges.keySet();
+	}
+	
+	
 	///// Private methods /////
 	private void generateTiles(int[][] layout) {
 		for (int i=0; i < layout.length; i++) {

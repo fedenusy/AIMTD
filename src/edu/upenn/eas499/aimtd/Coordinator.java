@@ -1,6 +1,8 @@
 package edu.upenn.eas499.aimtd;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.PriorityQueue;
 
 /**
  * Class responsible for monster movement coordination.
@@ -63,12 +65,37 @@ public class Coordinator {
 	
 	///// Private methods /////
 	/**
-	 * Moves the Monster along the shortest path towards its objective.
+	 * Moves the Monster along the shortest path towards its objective, using an implementation of
+	 * Dijkstra's algorithm. 
 	 */
 	private void shortestPathMove(Monster monster) {
+		Collection<Tile> nodes = initializeNodes(monster);
+		PriorityQueue<Tile> nodeQueue = new PriorityQueue<Tile>();
+		nodeQueue.addAll(nodes);
+		
+		while (!nodeQueue.isEmpty()) {
+			Tile node = nodeQueue.poll();
+			if (node.getCost() == Integer.MAX_VALUE) break;
+			for (Tile neighbor : _map.getNeighbors(node)) {
+				
+			}
+		}
+	}
+	
+	private Collection<Tile> initializeNodes(Monster monster) {
+		Collection<Tile> nodes = _map.getNodes();
+		for (Tile node : nodes) node.setCost(Integer.MAX_VALUE);
+		Tile source = getSource(monster);
+		nodes.remove(source);
+		source.setCost(0);
+		nodes.add(source);
+		return nodes;
+	}
+	
+	private Tile getSource(Monster monster) {
 		int xPos = monster.getRoundedX();
 		int yPos = monster.getRoundedY();
-		Tile start = _map.getTile(xPos, yPos);
+		return _map.getTile(xPos, yPos);
 	}
 	
 	/**
