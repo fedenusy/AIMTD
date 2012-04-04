@@ -55,6 +55,7 @@ public class Coordinator {
 	 * their relationship to tick().
 	 */
 	public void tick() {
+		_map.updateTileCosts();
 		for (Monster monster : _monsters) {
 			if (_intelligenceLevel == 1) shortestPathMove(monster);
 			else if (_intelligenceLevel == 2) survivalAwareMove(monster);
@@ -66,9 +67,16 @@ public class Coordinator {
 	///// Private methods /////
 	/**
 	 * Moves the Monster along the shortest path towards its objective, using an implementation of
-	 * Dijkstra's algorithm. 
+	 * Dijkstra's algorithm to calculate the shortest path.
 	 */
 	private void shortestPathMove(Monster monster) {
+		dijkstra(monster);
+		
+		Tile source = getSource(monster);
+		Tile objective = getObjective(monster);
+	}
+	
+	private void dijkstra(Monster monster) {
 		Collection<Tile> nodes = initializeNodes(monster);
 		PriorityQueue<Tile> nodeQueue = new PriorityQueue<Tile>();
 		nodeQueue.addAll(nodes);
@@ -102,6 +110,11 @@ public class Coordinator {
 		int xPos = monster.getRoundedX();
 		int yPos = monster.getRoundedY();
 		return _map.getTile(xPos, yPos);
+	}
+	
+	private Tile getObjective(Monster monster) {
+		//TODO
+		return null;
 	}
 	
 	/**

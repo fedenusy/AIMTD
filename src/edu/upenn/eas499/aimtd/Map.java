@@ -60,20 +60,6 @@ public class Map {
 	
 	///// Public methods /////
 	/**
-	 * Creates an Edge from t1 to t2, allowing Monsters to travel between the two Tiles.
-	 * @param t1
-	 * @param t2
-	 * @param biDirectional Whether another edge should be created from t2 to t1.
-	 * @return Whether the edge was successfully created.
-	 */
-	public boolean createEdge(Tile t1, Tile t2, boolean biDirectional) {
-		if (!t1.isWalkable() || !t2.isWalkable()) return false;
-		_edges.get(t1).add(t2);
-		if (biDirectional) _edges.get(t2).add(t1);
-		return true;
-	}
-	
-	/**
 	 * @param t The tile.
 	 * @return A collection of all Tiles monsters can move to from t.
 	 */
@@ -99,6 +85,27 @@ public class Map {
 	///// Package-protected methods /////
 	Collection<Tile> getNodes() {
 		return _edges.keySet();
+	}
+	
+	/**
+	 * Updates the damage-cost of moving over each tile.
+	 */
+	void updateTileCosts() {
+		//TODO
+	}
+	
+	/**
+	 * Creates an Edge from t1 to t2, allowing Monsters to travel between the two Tiles.
+	 * @param t1
+	 * @param t2
+	 * @param biDirectional Whether another edge should be created from t2 to t1.
+	 * @return Whether the edge was successfully created.
+	 */
+	boolean createEdge(Tile t1, Tile t2, boolean biDirectional) {
+		if (!t1.isWalkable() || !t2.isWalkable()) return false;
+		_edges.get(t1).add(t2);
+		if (biDirectional) _edges.get(t2).add(t1);
+		return true;
 	}
 	
 	
