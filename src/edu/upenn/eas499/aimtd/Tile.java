@@ -7,35 +7,39 @@ package edu.upenn.eas499.aimtd;
  */
 class Tile {
 	
-	// Monsters travel over ROAD tiles in an attempt to reach
-	// an OBJECTIVE tile.
-	// Towers can be built on FIELD tiles.
-	// ROCK tiles represent dead space.
+	///// Monsters travel over ROAD tiles in an attempt to reach
+	///// an OBJECTIVE tile.
+	///// Towers can be built on FIELD tiles.
+	///// ROCK tiles represent dead space.
 	public enum Type { ROAD, OBJECTIVE, FIELD, ROCK }
 	
 	
-	// Instance variables
-	private Type type;
-	private int x, y;
+	///// Instance variables /////
+	private Type _type;
+	private int _x, _y;
 	
-	// Getter methods
-	public Type getType() { return type; }
-	public int getX() { return x; }
-	public int getY() { return y; }
 	
-	// Public methods
+	///// Constructors /////
 	public Tile(int x, int y, Type type) {
 		if (type==null) throw new IllegalArgumentException("Invalid Tile.Type for Tile instance");
-		this.type = type;
-		this.x = x;
-		this.y = y;
+		_type = type;
+		_x = x;
+		_y = y;
 	}
 	
+	
+	///// Getter methods /////
+	public Type getType() { return _type; }
+	public int getX() { return _x; }
+	public int getY() { return _y; }
+	
+	
+	///// Public methods /////
 	/**
 	 * @return Whether this is a Road or Objective type Tile.
 	 */
 	public boolean isWalkable() {
-		return (type.equals(Type.ROAD) || type.equals(Type.OBJECTIVE));
+		return (_type.equals(Type.ROAD) || _type.equals(Type.OBJECTIVE));
 	}
 	
 	/**
@@ -43,7 +47,7 @@ class Tile {
 	 * @return The Euclidean distance between this tile and t.
 	 */
 	public double distanceTo(Tile t) {
-		return Math.sqrt((x-t.getX())^2+(y-t.getY())^2);
+		return Math.sqrt((_x-t.getX())^2+(_y-t.getY())^2);
 	}
 	
 }

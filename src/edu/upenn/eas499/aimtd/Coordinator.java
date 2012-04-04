@@ -9,30 +9,33 @@ import java.util.ArrayList;
  */
 public class Coordinator {
 
-	// Instance variables
-	private Map map;
-	private ArrayList<Monster> monsters;
-	private ArrayList<Tower> towers;
-	private int intelligenceLevel;
+	///// Instance variables ////
+	private Map _map;
+	private ArrayList<Monster> _monsters;
+	private ArrayList<Tower> _towers;
+	private int _intelligenceLevel;
 	
-	// Public methods
+	
+	///// Constructors /////
 	/**
 	 * @param map The map over which the coordinator should base its decisions.
 	 */
 	public Coordinator(Map map, int intelligenceLevel) {
-		this.map = map;
-		this.monsters = new ArrayList<Monster>();
-		this.towers = new ArrayList<Tower>();
-		this.intelligenceLevel = intelligenceLevel;
-		if (intelligenceLevel != 1) this.intelligenceLevel = 1;
+		_map = map;
+		_monsters = new ArrayList<Monster>();
+		_towers = new ArrayList<Tower>();
+		_intelligenceLevel = intelligenceLevel;
+		if (intelligenceLevel != 1) _intelligenceLevel = 1;
 	}
+
 	
+	///// Public methods /////
 	/**
 	 * Adds a Monster that will be guided by the Coordinator's tick() decisions.
 	 * @param monster
 	 */
 	public void addMonster(Monster monster) {
-		monsters.add(monster);
+		_monsters.add(monster);
 	}
 	
 	/**
@@ -40,7 +43,7 @@ public class Coordinator {
 	 * @param tower
 	 */
 	public void addTower(Tower tower) {
-		towers.add(tower);
+		_towers.add(tower);
 	}
 	
 	/**
@@ -50,16 +53,17 @@ public class Coordinator {
 	 * their relationship to tick().
 	 */
 	public void tick() {
-		if (intelligenceLevel == 1) {
-			for (Monster monster : monsters) aStarMove(monster);
+		if (_intelligenceLevel == 1) {
+			for (Monster monster : _monsters) aStarMove(monster);
 		}
 	}
 	
-	// Private methods
+	
+	///// Private methods /////
 	private void aStarMove(Monster monster) {
-		double xPos = monster.getX();
-		double yPos = monster.getY();
-		Tile start = map.getTile((int) Math.round(xPos), (int) Math.round(yPos));
+		float xPos = monster.getX();
+		float yPos = monster.getY();
+		Tile start = _map.getTile(Math.round(xPos), Math.round(yPos));
 	}
 	
 }

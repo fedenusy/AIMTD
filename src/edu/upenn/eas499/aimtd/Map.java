@@ -11,11 +11,12 @@ import java.util.HashMap;
  */
 public class Map {
 
-	// Instance variables
-	Tile[][] tiles;
-	HashMap<Tile, ArrayList<Tile>> edges;
+	///// Instance variables /////
+	Tile[][] _tiles;
+	HashMap<Tile, ArrayList<Tile>> _edges;
 	
-	// Public methods
+	
+	///// Constructors /////
 	/**
 	 * Convenience method, identical to Map(int[][] layout, true).
 	 * @param layout The map's layout.
@@ -36,79 +37,47 @@ public class Map {
 	 * 					{0,1,1,8,0},
 	 * 					{0,0,0,1,0},
 	 * 					{0,0,0,0,2} };
-	 * @param createEdges Whether to automatically generate the edges between Road/Objective tiles and other 
+	 * @param generateEdges Whether to automatically generate the edges between Road/Objective tiles and other 
 	 * adjacent Road/Objective tiles, including diagonals. Monsters can only travel between two Road/Objective tiles 
 	 * if there exists an edge between them.
 	 * 
 	 */
-	public Map(int[][] layout, boolean createEdges) {
+	public Map(int[][] layout, boolean generateEdges) {
 		if (layout==null || layout[0]==null) throw new IllegalArgumentException("Invalid map layout");
 		
 		int length = layout.length;
 		int width = layout[0].length;
-		tiles = new Tile[width][length];
 		
-		for (int i=0; i<length; i++) {
-			for (int j=0; j<width; j++) {
-				try {
-					if (layout[i][j]==0) tiles[j][i] = new Tile(j, i, Tile.Type.FIELD);
-					else if (layout[i][j]==1) tiles[j][i] = new Tile(j, i, Tile.Type.ROAD);
-					else if (layout[i][j]==2) tiles[j][i] = new Tile(j, i, Tile.Type.OBJECTIVE);
-					else tiles[j][i] = new Tile(j, i, Tile.Type.ROCK);
-				} catch (ArrayIndexOutOfBoundsException e) {
-					tiles[j][i] = new Tile(j, i, Tile.Type.ROCK);
-				}
-			}
-		}
+		_tiles = new Tile[width][length];
+		generateTiles(layout);
 		
-		edges = new HashMap<Tile, ArrayList<Tile>>();
-		
-		for (int i=0; i<width; i++) {
-			for (int j=0; j<length; j++) {
-				if(tiles[i][j].isWalkable()) 
-					edges.put(tiles[i][j], new ArrayList<Tile>());
-			}
-		}
-
-		if (createEdges) for (Tile walkable : edges.keySet()) {
-			int x = walkable.getX();
-			int y = walkable.getY();
-			for (int offX=-1; offX<=1; offX++) {
-				for (int offY=-1; offY<=1; offY++) {
-					try {
-						Tile candidate = tiles[x+offX][y+offY];
-						if (!candidate.isWalkable()) continue;
-						edges.get(walkable).add(candidate);
-					} catch (ArrayIndexOutOfBoundsException e) { }
-				}
-			}
-		}
-
+		_edges = new HashMap<Tile, ArrayList<Tile>>();
+		generateNodes();
+		if (generateEdges) generateEdges();
 	}
 	
+	
+	///// Public methods /////
 	/**
-	 * Creates an Edge from (x1,y1) to (x2,y2), thus allowing Monsters to travel between 
-	 * the two Tiles.
-	 * @param biDirectional Whether another edge should be created from (x2,y2) to (x1,y1).
+	 * Creates an Edge from t1 to t2, allowing Monsters to travel between the two Tiles.
+	 * @param t1
+	 * @param t2
+	 * @param biDirectional Whether another edge should be created from t2 to t1.
 	 * @return Whether the edge was successfully created.
 	 */
-	public boolean createEdge(int x1, int y1, int x2, int y2, boolean biDirectional) {
-		try {
-			Tile one = tiles[x1][y1], two = tiles[x2][y2];
-			if (!one.isWalkable() || !two.isWalkable()) return false;
-			edges.get(one).add(two);
-			if (biDirectional) edges.get(two).add(one);
-			return true;
-		} catch (ArrayIndexOutOfBoundsException e) { return false; }
+	public boolean createEdge(Tile t1, Tile t2, boolean biDirectional) {
+		if (!t1.isWalkable() || !t2.isWalkable()) return false;
+		_edges.get(t1).add(t2);
+		if (biDirectional) _edges.get(t2).add(t1);
+		return true;
 	}
 	
 	/**
-	 * @param x The tile's x-coordinate.
-	 * @param y The tile's y-coordinate.
-	 * @return A collection of all neighboring Tiles.
+	 * @param t The tile.
+	 * @return A collection of all Tiles monsters can move to from t.
 	 */
 	public Collection<Tile> getNeighbors(Tile t) {
-		return edges.get(tiles[t.getX()][t.getY()]);
+		return _edges.get(_tiles[t.getX()][t.getY()]);
 	}
 	
 	/**
@@ -119,10 +88,54 @@ public class Map {
 	 */
 	public Tile getTile(int x, int y) {
 		try {
-			return tiles[x][y];
+			return _tiles[x][y];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return null;
 		}
 	}
 	
+	
+	///// Private methods /////
+	private void generateTiles(int[][] layout) {
+		for (int i=0; i < layout.length; i++) {
+			for (int j=0; j < layout[0].length; j++) {
+				try {
+					if (layout[i][j]==0) _tiles[j][i] = new Tile(j, i, Tile.Type.FIELD);
+					else if (layout[i][j]==1) _tiles[j][i] = new Tile(j, i, Tile.Type.ROAD);
+					else if (layout[i][j]==2) _tiles[j][i] = new Tile(j, i, Tile.Type.OBJECTIVE);
+					else _tiles[j][i] = new Tile(j, i, Tile.Type.ROCK);
+				} catch (ArrayIndexOutOfBoundsException e) {
+					_tiles[j][i] = new Tile(j, i, Tile.Type.ROCK);
+				}
+			}
+		}
+	}
+	
+	private void generateNodes() {
+		for (int i=0; i < _tiles.length; i++) {
+			for (int j=0; j < _tiles[0].length; j++) {
+				if(_tiles[i][j].isWalkable()) 
+					_edges.put(_tiles[i][j], new ArrayList<Tile>());
+			}
+		}
+	}
+	
+	private void generateEdges() {
+		for (Tile node : _edges.keySet()) {
+			int x = node.getX();
+			int y = node.getY();
+			for (int offX=-1; offX<=1; offX++) {
+				for (int offY=-1; offY<=1; offY++) {
+					try { 
+						Tile candidateNeighbor = _tiles[x+offX][y+offY];
+						createEdge(node, candidateNeighbor, false);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						continue;
+					}
+				}
+			}
+		}
+	}
+	
 }
+

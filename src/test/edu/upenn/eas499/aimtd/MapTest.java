@@ -1,4 +1,4 @@
-package edu.upenn.eas499.aimtd.test;
+package test.edu.upenn.eas499.aimtd;
 
 import static org.junit.Assert.*;
 
