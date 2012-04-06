@@ -1,5 +1,7 @@
 package edu.upenn.eas499.aimtd;
 
+import java.util.ArrayList;
+
 /**
  * Monster that travels the TD map in order to reach an objective.
  * @author fedenusy
@@ -7,11 +9,20 @@ package edu.upenn.eas499.aimtd;
  */
 public abstract class Monster {
 
+	class Waypoint {
+		private int _x, _y;
+		Waypoint(int x, int y) { _x = x; _y = y; }
+		public int getX() { return _x; }
+		public int getY() { return _y; }
+	}
+	
 	///// Instance variables /////
 	private float _x, _y;
 	private int _hp;
 	private int _moveSpeed;
-	private Tile objective;
+	private int _movesLeft;
+	private boolean _reachedObjective;
+	private ArrayList<Waypoint> _waypoints;
 	
 	
 	///// Constructors /////
@@ -30,6 +41,8 @@ public abstract class Monster {
 		_y = y;
 		_hp = hp;
 		_moveSpeed = moveSpeed;
+		_reachedObjective = false;
+		_waypoints = new ArrayList<Waypoint>();
 	}
 	
 	
@@ -38,18 +51,76 @@ public abstract class Monster {
 	public float getY() { return _y; }
 	public int getHp() { return _hp; }
 	public int getSpeed() { return _moveSpeed; }
+	public boolean reachedObjective() { return _reachedObjective; }
 	public int getRoundedX() { return Math.round(_x); }
 	public int getRoundedY() { return Math.round(_y); }
 	
 	
+	///// Setter methods /////
+	void setReachedObjective(boolean reachedObjective) { _reachedObjective = reachedObjective; }
+	
+	
 	///// Public methods /////
+	/**
+	 * Adds a waypoint to the Monster's path. Monsters will try to reach waypoints in the order they were
+	 * added before attempting to reach OBJECTIVE tiles.
+	 * @param x The waypoint's x-coordinate.
+	 * @param y The waypoint's y-coordinate.
+	 */
+	public void addWaypoint(int x, int y) {
+		Waypoint wp = new Waypoint(x, y);
+		_waypoints.add(wp);
+	}
+	
+	
+	///// Package-protected methods /////
+	void startNewTurn() {
+		_movesLeft = _moveSpeed;
+	}
+	
+	/**
+	 * @return The next Waypoint, after removing it from the monster's list of Waypoints.
+	 */
+	Waypoint getWaypoint() {
+		if (_waypoints.isEmpty()) return null;
+		Waypoint wp = _waypoints.get(0);
+		_waypoints.remove(0);
+		return wp;
+	}
+	
+	boolean canMove() {
+		return _movesLeft > 0;
+	}
 
+	void moveTowards(int x, int y) {
+		double moveY = y - _y;
+		double moveX = x - _x;
+		while (canMove() && !reachedTile(x, y)) {
+			if (!reachedY(y)) {
+				if (moveY > 0) _y += .005;
+				else _y -= .005;
+				_movesLeft -= .005;
+			}
+			if (!reachedX(x)) {
+				if (moveX > 0) _x += .005;
+				else _x -= .005;
+				_movesLeft -= .005;
+			}
+		}
+	}
 	
 	
-	///// Final methods /////
-	protected final void move(float x, float y) {
-		_x = x;
-		_y = y;
+	///// Private methods /////
+	private boolean reachedX(int x) {
+		return (x - _x) >= -.02 && (x - _x) <= .02;
+	}
+	
+	private boolean reachedY(int y) {
+		return (y - _y) >= -.02 && (y - _y) <= .02;
+	}
+	
+	private boolean reachedTile(int x, int y) {
+		return reachedX(x) && reachedY(y);
 	}
 	
 }

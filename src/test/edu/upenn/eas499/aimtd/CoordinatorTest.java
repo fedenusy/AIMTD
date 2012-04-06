@@ -40,9 +40,25 @@ public class CoordinatorTest {
 		MonsterImpl monster2 = new MonsterImpl(11, 2, 75, 200);
 		coordinator1.addMonster(monster1);
 		coordinator1.addMonster(monster2);
+		
 		coordinator1.tick();
 		assertTrue(monster1.getX() == 13); assertTrue(monster1.getY() == 2);
 		assertTrue(monster2.getX() == 13); assertTrue(monster2.getY() == 2);
+		
+		MonsterImpl monster3 = new MonsterImpl(11, 6, 75, 150);
+		MonsterImpl monster4 = new MonsterImpl(12, 8, 75, 230);
+		coordinator1.addMonster(monster3);
+		coordinator1.addMonster(monster4);
+		
+		coordinator1.tick();
+		assertTrue(monster1.getX() == 14); assertTrue(monster1.getY() == 2);
+		assertTrue(monster1.reachedObjective());
+		assertTrue(monster2.getX() == 14); assertTrue(monster2.getY() == 2);
+		assertTrue(monster2.reachedObjective());
+		assertTrue(monster3.getRoundedX() == 10); assertTrue(monster2.getRoundedY() == 5);
+		assertFalse(monster3.reachedObjective());
+		assertTrue(monster3.getRoundedX() == 11); assertTrue(monster2.getRoundedY() == 6);
+		assertFalse(monster3.reachedObjective());
 	}
 
 }

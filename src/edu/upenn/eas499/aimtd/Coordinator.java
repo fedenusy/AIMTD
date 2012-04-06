@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;
 
+import edu.upenn.eas499.aimtd.Monster.Waypoint;
+
 /**
  * Class responsible for monster movement coordination.
  * @author fedenusy
@@ -57,6 +59,7 @@ public class Coordinator {
 	public void tick() {
 		_map.updateTileCosts();
 		for (Monster monster : _monsters) {
+			monster.startNewTurn();
 			if (_intelligenceLevel == 1) shortestPathMove(monster);
 			else if (_intelligenceLevel == 2) survivalAwareMove(monster);
 			else if (_intelligenceLevel == 3) groupTacticMove(monster);
@@ -70,51 +73,15 @@ public class Coordinator {
 	 * Dijkstra's algorithm to calculate the shortest path.
 	 */
 	private void shortestPathMove(Monster monster) {
-		dijkstra(monster);
-		
-		Tile source = getSource(monster);
-		Tile objective = getObjective(monster);
-	}
-	
-	private void dijkstra(Monster monster) {
-		Collection<Tile> nodes = initializeNodes(monster);
-		PriorityQueue<Tile> nodeQueue = new PriorityQueue<Tile>();
-		nodeQueue.addAll(nodes);
-		
-		while (!nodeQueue.isEmpty()) {
-			Tile node = nodeQueue.poll();
-			if (node.getCost() == Double.MAX_VALUE) break;
-			for (Tile neighbor : _map.getNeighbors(node)) {
-				double altCost = node.getCost() + node.distanceTo(neighbor);
-				if (altCost < neighbor.getCost()) {
-					nodeQueue.remove(neighbor);
-					neighbor.setCost(altCost);
-					neighbor.setPrevious(node);
-					nodeQueue.add(neighbor);
-				}
+		Pathfinder pathfinder = new Pathfinder(monster, _map, false);
+		while (monster.canMove()) {
+			Tile nextTile = pathfinder.nextTile();
+			monster.moveTowards(nextTile.getX(), nextTile.getY());
+			if (nextTile.isObjective() && monster.canMove()) {
+				monster.setReachedObjective(true);
+				break;
 			}
 		}
-	}
-	
-	private Collection<Tile> initializeNodes(Monster monster) {
-		Collection<Tile> nodes = _map.getNodes();
-		for (Tile node : nodes) node.setCost(Double.MAX_VALUE);
-		Tile source = getSource(monster);
-		nodes.remove(source);
-		source.setCost(0);
-		nodes.add(source);
-		return nodes;
-	}
-	
-	private Tile getSource(Monster monster) {
-		int xPos = monster.getRoundedX();
-		int yPos = monster.getRoundedY();
-		return _map.getTile(xPos, yPos);
-	}
-	
-	private Tile getObjective(Monster monster) {
-		//TODO
-		return null;
 	}
 	
 	/**

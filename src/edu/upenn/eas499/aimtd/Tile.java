@@ -7,7 +7,7 @@ import java.util.Comparator;
  * @author fedenusy
  *
  */
-class Tile implements Comparator<Tile> {
+class Tile implements Comparable<Tile> {
 	
 	///// Monsters travel over ROAD tiles in an attempt to reach
 	///// an OBJECTIVE tile.
@@ -55,6 +55,13 @@ class Tile implements Comparator<Tile> {
 	}
 	
 	/**
+	 * @return Whether this is an Objective type Tile.
+	 */
+	boolean isObjective() {
+		return _type.equals(Type.OBJECTIVE);
+	}
+	
+	/**
 	 * @param t The destination tile.
 	 * @return The Euclidean distance between this tile and t.
 	 */
@@ -64,9 +71,9 @@ class Tile implements Comparator<Tile> {
 
 	
 	///// Public methods /////
-	public int compare(Tile t1, Tile t2) {
-		if (t1.getCost() < t2.getCost()) return 1;
-		else if (t1.getCost() > t2.getCost()) return -1;
+	public int compareTo(Tile t) {
+		if (getCost() < t.getCost()) return 1;
+		else if (getCost() > t.getCost()) return -1;
 		else return 0;
 	}
 	

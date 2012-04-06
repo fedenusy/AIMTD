@@ -87,6 +87,14 @@ public class Map {
 		return _edges.keySet();
 	}
 	
+	Collection<Tile> getObjectives() {
+		ArrayList<Tile> result = new ArrayList<Tile>();
+		for (Tile tile : _edges.keySet()) {
+			if (tile.isObjective()) result.add(tile);
+		}
+		return result;
+	}
+	
 	/**
 	 * Updates the damage-cost of moving over each tile.
 	 */
