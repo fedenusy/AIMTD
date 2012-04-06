@@ -66,14 +66,14 @@ class Tile implements Comparable<Tile> {
 	 * @return The Euclidean distance between this tile and t.
 	 */
 	double distanceTo(Tile t) {
-		return Math.sqrt((_x-t.getX())^2+(_y-t.getY())^2);
+		return Math.sqrt( Math.pow((_x-t.getX()),2) + Math.pow((_y-t.getY()),2) );
 	}
 
 	
 	///// Public methods /////
 	public int compareTo(Tile t) {
-		if (getCost() < t.getCost()) return 1;
-		else if (getCost() > t.getCost()) return -1;
+		if (getCost() > t.getCost()) return 1;
+		else if (getCost() < t.getCost()) return -1;
 		else return 0;
 	}
 	

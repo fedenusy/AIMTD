@@ -98,7 +98,7 @@ class Pathfinder {
 			if (objective == null || objective.getCost() > tile.getCost()) objective = tile;
 		}
 		if (objective.getCost() != Double.MAX_VALUE) return objective;
-		else throw new IllegalArgumentException("Monster has no reachable objective");
+		else throw new IllegalArgumentException("Monster has no reachable objective");	
 	}
 	
 	// Returns the Tile corresponding to the next Waypoint in the Monster's list, if the Waypoint is reachable

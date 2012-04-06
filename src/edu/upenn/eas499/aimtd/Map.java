@@ -54,7 +54,7 @@ public class Map {
 		_edges = new HashMap<Tile, ArrayList<Tile>>();
 		generateNodes();
 		if (generateEdges) generateEdges();
-		eliminateLoops();
+		//eliminateLoops();
 	}
 	
 	

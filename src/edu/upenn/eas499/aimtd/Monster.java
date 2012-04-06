@@ -20,7 +20,7 @@ public abstract class Monster {
 	private float _x, _y;
 	private int _hp;
 	private int _moveSpeed;
-	private int _movesLeft;
+	private double _movesLeft;
 	private boolean _reachedObjective;
 	private ArrayList<Waypoint> _waypoints;
 	
@@ -95,16 +95,16 @@ public abstract class Monster {
 	void moveTowards(int x, int y) {
 		double moveY = y - _y;
 		double moveX = x - _x;
-		while (canMove() && !reachedTile(x, y)) {
+		while (canMove() && !reachedCoords(x, y)) {
 			if (!reachedY(y)) {
 				if (moveY > 0) _y += .005;
 				else _y -= .005;
-				_movesLeft -= .005;
+				_movesLeft -= .5;
 			}
 			if (!reachedX(x)) {
 				if (moveX > 0) _x += .005;
 				else _x -= .005;
-				_movesLeft -= .005;
+				_movesLeft -= .5;
 			}
 		}
 	}
@@ -119,7 +119,7 @@ public abstract class Monster {
 		return (y - _y) >= -.02 && (y - _y) <= .02;
 	}
 	
-	private boolean reachedTile(int x, int y) {
+	private boolean reachedCoords(int x, int y) {
 		return reachedX(x) && reachedY(y);
 	}
 	
