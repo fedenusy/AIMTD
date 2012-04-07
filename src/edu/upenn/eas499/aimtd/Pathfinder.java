@@ -25,6 +25,18 @@ class Pathfinder {
 		if (!survivalAware) calculateDijkstra();
 	}
 	
+	private void initializeNodes() {
+		updateCurrentNode();
+		if (_currentNode == null) {
+			String exception = "Monster is located on an invalid map coordinate: ";
+			exception += "(" + _monster.getRoundedX() + ", " + _monster.getRoundedY() + ")";
+			throw new IllegalArgumentException(exception);
+		}
+		for (Tile node : _nodes) {
+			if (!node.equals(_currentNode)) node.setCost(Double.MAX_VALUE);
+		}
+	}
+	
 	
 	///// Package-protected methods /////
 	/**
@@ -33,7 +45,7 @@ class Pathfinder {
 	Tile nextTile() {
 		updateCurrentNode();
 		Tile objective = getObjective();
-		if (_currentNode.equals(objective)) return null;
+		if (_currentNode.equals(objective)) return objective;
 		
 		Tile previous = objective.getPrevious();
 		while (!_currentNode.equals(previous)) {
@@ -49,26 +61,32 @@ class Pathfinder {
 	
 	
 	///// Private methods /////
-	private void initializeNodes() {
-		updateCurrentNode();
-		if (_currentNode == null) {
-			String exception = "Monster is located on an invalid map coordinate: ";
-			exception += "(" + _monster.getRoundedX() + ", " + _monster.getRoundedY() + ")";
-			throw new IllegalArgumentException(exception);
-		}
-		for (Tile node : _nodes) {
-			if (!node.equals(_currentNode)) node.setCost(Double.MAX_VALUE);
-		}
-	}
-	
 	private void updateCurrentNode() {
 		int xPos = _monster.getRoundedX();
 		int yPos = _monster.getRoundedY();
-		for (Tile node : _nodes) {
-			if (node.getX() == xPos && node.getY() == yPos)
-				_currentNode = node;
+		
+		_currentNode = _map.getTile(xPos, yPos);
+		
+		if (!validCurrentNode()) {
+			if (xPos < _monster.getX()) xPos = (int) Math.ceil(_monster.getX());
+			else xPos = (int) Math.floor(_monster.getX());
+			_currentNode = _map.getTile(xPos, yPos);
 		}
+		
+		if (!validCurrentNode()) {
+			xPos = _monster.getRoundedX();
+			if (yPos < _monster.getX()) yPos = (int) Math.ceil(_monster.getY());
+			else yPos = (int) Math.floor(_monster.getY());
+			_currentNode = _map.getTile(xPos, yPos);
+		}
+		
+		if (!validCurrentNode()) throw new IllegalArgumentException("Monster located on an invalid tile.");
+		
 		_currentNode.setCost(0);
+	}
+	
+	private boolean validCurrentNode() {
+		return _currentNode != null && _currentNode.isWalkable();
 	}
 	
 	private void calculateDijkstra() {

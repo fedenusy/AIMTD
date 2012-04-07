@@ -54,70 +54,8 @@ public class Map {
 		_edges = new HashMap<Tile, ArrayList<Tile>>();
 		generateNodes();
 		if (generateEdges) generateEdges();
-		//eliminateLoops();
 	}
 	
-	
-	///// Public methods /////
-	/**
-	 * @param t The tile.
-	 * @return A collection of all Tiles monsters can move to from t.
-	 */
-	public Collection<Tile> getNeighbors(Tile t) {
-		return _edges.get(_tiles[t.getX()][t.getY()]);
-	}
-	
-	/**
-	 * @param x
-	 * @param y
-	 * @return The Tile at the specified (x,y) position, or null if the coordinate is out of
-	 * bounds.
-	 */
-	public Tile getTile(int x, int y) {
-		try {
-			return _tiles[x][y];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return null;
-		}
-	}
-	
-	
-	///// Package-protected methods /////
-	Collection<Tile> getNodes() {
-		return _edges.keySet();
-	}
-	
-	Collection<Tile> getObjectives() {
-		ArrayList<Tile> result = new ArrayList<Tile>();
-		for (Tile tile : _edges.keySet()) {
-			if (tile.isObjective()) result.add(tile);
-		}
-		return result;
-	}
-	
-	/**
-	 * Updates the damage-cost of moving over each tile.
-	 */
-	void updateTileCosts() {
-		//TODO
-	}
-	
-	/**
-	 * Creates an Edge from t1 to t2, allowing Monsters to travel between the two Tiles.
-	 * @param t1
-	 * @param t2
-	 * @param biDirectional Whether another edge should be created from t2 to t1.
-	 * @return Whether the edge was successfully created.
-	 */
-	boolean createEdge(Tile t1, Tile t2, boolean biDirectional) {
-		if (!t1.isWalkable() || !t2.isWalkable()) return false;
-		_edges.get(t1).add(t2);
-		if (biDirectional) _edges.get(t2).add(t1);
-		return true;
-	}
-	
-	
-	///// Private methods /////
 	private void generateTiles(int[][] layout) {
 		for (int i=0; i < layout.length; i++) {
 			for (int j=0; j < layout[0].length; j++) {
@@ -159,15 +97,60 @@ public class Map {
 		}
 	}
 	
-	private void eliminateLoops() {
-		for (Tile node : _edges.keySet()) {
-			ArrayList<Tile> neighbors = _edges.get(node);
-			boolean stillRemoving = true;
-			while (stillRemoving) {
-				stillRemoving = neighbors.remove(node);
-			}
-			_edges.put(node, neighbors);
+	
+	///// Public methods /////
+	
+	
+	///// Package-protected methods /////
+	/**
+	 * @param x
+	 * @param y
+	 * @return The Tile at the specified (x,y) position, or null if the coordinate is out of
+	 * bounds.
+	 */
+	Tile getTile(int x, int y) {
+		try {
+			return _tiles[x][y];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return null;
 		}
+	}
+	
+	Collection<Tile> getNodes() {
+		return _edges.keySet();
+	}
+	
+	Collection<Tile> getNeighbors(Tile t) {
+		return _edges.get(_tiles[t.getX()][t.getY()]);
+	}
+	
+	Collection<Tile> getObjectives() {
+		ArrayList<Tile> result = new ArrayList<Tile>();
+		for (Tile tile : _edges.keySet()) {
+			if (tile.isObjective()) result.add(tile);
+		}
+		return result;
+	}
+	
+	/**
+	 * Updates the damage-cost of moving over each tile.
+	 */
+	void updateTileCosts() {
+		//TODO
+	}
+	
+	/**
+	 * Creates an Edge from t1 to t2, allowing Monsters to travel between the two Tiles.
+	 * @param t1
+	 * @param t2
+	 * @param biDirectional Whether another edge should be created from t2 to t1.
+	 * @return Whether the edge was successfully created.
+	 */
+	boolean createEdge(Tile t1, Tile t2, boolean biDirectional) {
+		if (!t1.isWalkable() || !t2.isWalkable()) return false;
+		_edges.get(t1).add(t2);
+		if (biDirectional) _edges.get(t2).add(t1);
+		return true;
 	}
 	
 }

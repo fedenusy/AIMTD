@@ -1,7 +1,5 @@
 package test.edu.upenn.eas499.aimtd;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -87,10 +85,10 @@ public class MapTest {
 	}
 	
 	@Test public void testMapConstruction() {
-		Map map1 = new Map(layout15x15);
-		Map map2 = new Map(layout20x20);
-		Map map3 = new Map(layout15x10);
-		Map map4 = new Map(layout25x25);
+		new Map(layout15x15);
+		new Map(layout20x20);
+		new Map(layout15x10);
+		new Map(layout25x25);
 	}
 	
 }

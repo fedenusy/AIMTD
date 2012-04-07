@@ -1,10 +1,6 @@
 package edu.upenn.eas499.aimtd;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.PriorityQueue;
-
-import edu.upenn.eas499.aimtd.Monster.Waypoint;
 
 /**
  * Class responsible for monster movement coordination.
@@ -51,14 +47,14 @@ public class Coordinator {
 	}
 	
 	/**
-	 * This method should be called each time the Coordinator has to make Monsters move(). The
-	 * Coordinator assumes Towers will fire their projectiles immediately after tick() is called.
-	 * See Monster and Tower classes for definitions of moveSpeed and fireSpeed, respectively, and 
-	 * their relationship to tick().
+	 * This method should be called each time the Coordinator has to make Monsters move. See Monster 
+	 * and Tower classes for definitions of moveSpeed and fireSpeed, respectively, and their relationship 
+	 * to tick().
 	 */
 	public void tick() {
 		_map.updateTileCosts();
 		for (Monster monster : _monsters) {
+			if (monster.reachedObjective()) continue;
 			monster.startNewTurn();
 			if (_intelligenceLevel == 1) shortestPathMove(monster);
 			else if (_intelligenceLevel == 2) survivalAwareMove(monster);
@@ -74,6 +70,10 @@ public class Coordinator {
 	 */
 	private void shortestPathMove(Monster monster) {
 		Pathfinder pathfinder = new Pathfinder(monster, _map, false);
+		moveMonster(monster, pathfinder);
+	}
+	
+	private void moveMonster(Monster monster, Pathfinder pathfinder) {
 		while (monster.canMove()) {
 			Tile nextTile = pathfinder.nextTile();
 			monster.moveTowards(nextTile.getX(), nextTile.getY());

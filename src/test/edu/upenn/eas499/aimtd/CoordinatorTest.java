@@ -9,48 +9,67 @@ import edu.upenn.eas499.aimtd.*;
 
 public class CoordinatorTest {
 
-	private Coordinator coordinator1;
+	private Map _map1, _map2;
 	
 	@Before
 	public void setUp() throws Exception {
-		int[][] layout15x15 = 
-				new int[][]{	{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-								{1,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-								{0,1,0,1,1,1,1,1,1,1,1,1,1,1,2},
-								{0,1,0,0,1,0,0,0,0,0,0,0,0,0,1},
-								{0,1,0,0,1,0,0,0,0,0,0,1,1,1,1},
-								{0,0,1,0,1,0,0,0,0,0,1,0,0,0,0},
-								{0,1,0,0,1,0,0,0,0,0,1,1,1,0,0},
-								{0,1,0,0,1,0,0,0,0,1,0,0,1,0,0},
-								{0,1,0,0,1,0,0,0,0,0,1,1,1,1,0},
-								{1,0,0,0,0,1,1,1,1,0,0,0,0,0,1},
-								{0,1,0,0,0,1,0,0,1,0,0,0,0,1,0},
-								{0,0,1,0,0,1,0,0,1,0,0,0,1,0,0},
-								{0,1,0,0,0,1,0,0,1,0,0,1,0,1,0},
-								{0,0,1,0,0,1,0,0,0,1,1,0,1,0,0},
-								{0,0,0,1,1,1,0,0,0,0,0,0,0,0,0} };
-		
-		Map map1 = new Map(layout15x15);
-		coordinator1 = new Coordinator(map1, 1);
+		_map1 = new Map(new int[][]{	{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+										{1,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
+										{0,1,0,1,1,1,1,1,1,1,1,1,1,1,2},
+										{0,1,0,0,1,0,0,0,0,0,0,0,0,0,1},
+										{0,1,0,0,1,0,0,0,0,0,0,1,1,1,1},
+										{0,0,1,0,1,0,0,0,0,0,1,0,0,0,0},
+										{0,1,0,0,1,0,0,0,0,0,1,1,1,0,0},
+										{0,1,0,0,1,0,0,0,0,1,0,0,1,0,0},
+										{0,1,0,0,1,0,0,0,0,0,1,1,1,1,0},
+										{1,0,0,0,0,1,1,1,1,0,0,0,0,0,1},
+										{0,1,0,0,0,1,0,0,1,0,0,0,0,1,0},
+										{0,0,1,0,0,1,0,0,1,0,0,0,1,0,0},
+										{0,1,0,0,0,1,0,0,1,0,0,1,0,1,0},
+										{0,0,1,0,0,1,0,0,0,1,1,0,1,0,0},
+										{0,0,0,1,1,1,0,0,0,0,0,0,0,0,0} });
+
+		_map2 = new Map(new int[][]{	{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+										{0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0},
+										{0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0},
+										{0,0,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0},
+										{0,0,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0},
+										{0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0},
+										{0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0},
+										{0,0,0,8,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,2},
+										{0,0,8,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0},
+										{0,8,0,8,0,0,0,1,8,0,0,0,0,0,0,1,0,0,0,0},
+										{0,0,0,0,1,1,1,1,8,0,0,0,0,0,0,1,1,1,1,0},
+										{0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1,0},
+										{0,0,0,1 ,1,0,0,1,0,0,0,1,1,0,0,0,0,0,1,0},
+										{0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0},
+										{0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0},
+										{0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,0},
+										{0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+										{0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0},
+										{0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+										{0,2,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2} });
 	}
 
 	@Test
-	public void testIntLevel1() {
-		MonsterImpl monster1 = new MonsterImpl(12, 2, 75, 100);
-		MonsterImpl monster2 = new MonsterImpl(11, 2, 75, 200);
-		coordinator1.addMonster(monster1);
-		coordinator1.addMonster(monster2);
+	public void testShortestPathBasic() {
+		Coordinator coordinator = new Coordinator(_map1, 1);
 		
-		coordinator1.tick();
+		Monster monster1 = new MonsterImpl(12, 2, 75, 100);
+		Monster monster2 = new MonsterImpl(11, 2, 75, 200);
+		coordinator.addMonster(monster1);
+		coordinator.addMonster(monster2);
+		
+		coordinator.tick();
 		assertTrue(monster1.getRoundedX() == 13); assertTrue(monster1.getRoundedY() == 2);
 		assertTrue(monster2.getRoundedX() == 13); assertTrue(monster2.getRoundedY() == 2);
 		
-		MonsterImpl monster3 = new MonsterImpl(11, 6, 75, 150);
-		MonsterImpl monster4 = new MonsterImpl(12, 8, 75, 230);
-		coordinator1.addMonster(monster3);
-		coordinator1.addMonster(monster4);
+		Monster monster3 = new MonsterImpl(11, 6, 75, 150);
+		Monster monster4 = new MonsterImpl(12, 8, 75, 230);
+		coordinator.addMonster(monster3);
+		coordinator.addMonster(monster4);
 		
-		coordinator1.tick();
+		coordinator.tick();
 		assertTrue(monster1.getRoundedX() == 14); assertTrue(monster1.getRoundedY() == 2);
 		assertTrue(monster1.reachedObjective());
 		assertTrue(monster2.getRoundedX() == 14); assertTrue(monster2.getRoundedY() == 2);
@@ -61,4 +80,19 @@ public class CoordinatorTest {
 		assertFalse(monster4.reachedObjective());
 	}
 
+	@Test
+	public void testShortestPathWaypoints() {
+		Coordinator coordinator = new Coordinator(_map2, 1);
+		
+		Monster monster1 = new MonsterImpl(3, 12, 75, 10);
+		monster1.addWaypoint(4, 11);
+		coordinator.addMonster(monster1);
+		
+		for (int i=0; i<14; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 4); assertTrue(monster1.getRoundedY() == 11);
+		
+		for (int i=0; i<200; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 1); assertTrue(monster1.getRoundedY() == 19);
+	}
+	
 }

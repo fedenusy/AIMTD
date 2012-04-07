@@ -84,7 +84,10 @@ public abstract class Monster {
 	Waypoint getWaypoint() {
 		if (_waypoints.isEmpty()) return null;
 		Waypoint wp = _waypoints.get(0);
-		_waypoints.remove(0);
+		if (reachedCoords(wp.getX(), wp.getY())) {
+			_waypoints.remove(0);
+			wp = _waypoints.isEmpty() ? null : _waypoints.get(0);
+		}
 		return wp;
 	}
 	
@@ -93,30 +96,30 @@ public abstract class Monster {
 	}
 
 	void moveTowards(int x, int y) {
-		double moveY = y - _y;
-		double moveX = x - _x;
+		double yDirection = y - _y; //positive or negative
+		double xDirection = x - _x; //positive or negative
 		while (canMove() && !reachedCoords(x, y)) {
 			if (!reachedY(y)) {
-				if (moveY > 0) _y += .005;
+				if (yDirection > 0) _y += .005;
 				else _y -= .005;
 				_movesLeft -= .5;
 			}
 			if (!reachedX(x)) {
-				if (moveX > 0) _x += .005;
+				if (xDirection > 0) _x += .005;
 				else _x -= .005;
 				_movesLeft -= .5;
 			}
-		}
+		}		
 	}
 	
 	
 	///// Private methods /////
 	private boolean reachedX(int x) {
-		return (x - _x) >= -.02 && (x - _x) <= .02;
+		return (x - _x) >= -.005 && (x - _x) <= .005;
 	}
 	
 	private boolean reachedY(int y) {
-		return (y - _y) >= -.02 && (y - _y) <= .02;
+		return (y - _y) >= -.005 && (y - _y) <= .005;
 	}
 	
 	private boolean reachedCoords(int x, int y) {

@@ -1,7 +1,5 @@
 package edu.upenn.eas499.aimtd;
 
-import java.util.Comparator;
-
 /**
  * A tile in the TD map.
  * @author fedenusy
