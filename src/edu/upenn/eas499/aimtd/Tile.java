@@ -18,6 +18,7 @@ class Tile implements Comparable<Tile> {
 	private Type _type;
 	private int _x, _y;
 	private double _cost;
+	private double _damage;
 	private Tile _previous;
 	
 	
@@ -28,6 +29,7 @@ class Tile implements Comparable<Tile> {
 		_x = x;
 		_y = y;
 		_cost = Double.MAX_VALUE;
+		_damage = 0;
 	}
 	
 	
@@ -36,11 +38,13 @@ class Tile implements Comparable<Tile> {
 	int getX() { return _x; }
 	int getY() { return _y; }
 	double getCost() { return _cost; }
+	double getDamage() { return _damage; }
 	Tile getPrevious() { return _previous; }
 	
 	
 	///// Setter methods /////
 	void setCost(double cost) { _cost = cost; }
+	void setDamage(double damage) { _damage = damage; }
 	void setPrevious(Tile previous) { _previous = previous; }
 	
 	

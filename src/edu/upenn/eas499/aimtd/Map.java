@@ -135,8 +135,12 @@ public class Map {
 	/**
 	 * Updates the damage-cost of moving over each tile.
 	 */
-	void updateTileCosts() {
-		//TODO
+	void resetTilesDamage() {
+		for (Tile[] tileColumn : _tiles) {
+			for (Tile tile : tileColumn) {
+				tile.setDamage(0);
+			}
+		}
 	}
 	
 	/**

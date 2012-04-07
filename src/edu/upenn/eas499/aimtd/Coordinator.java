@@ -52,7 +52,8 @@ public class Coordinator {
 	 * to tick().
 	 */
 	public void tick() {
-		_map.updateTileCosts();
+		_map.resetTilesDamage();
+		updateTilesDamage();
 		for (Monster monster : _monsters) {
 			if (monster.reachedObjective()) continue;
 			monster.startNewTurn();
@@ -64,6 +65,21 @@ public class Coordinator {
 	
 	
 	///// Private methods /////
+	/**
+	 * Updates how much damage a Monster standing on a Tile can receive within a tick().
+	 */
+	private void updateTilesDamage() {
+		for (Tile tile : _map.getNodes()) {
+			for (Tower tower : _towers) {
+				if (tower.reaches(tile.getX(), tile.getY())) {
+					double damage = tile.getDamage();
+					damage += tower.getFireDamage() * tower.getFireSpeed() / 100;
+					tile.setDamage(damage);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Moves the Monster along the shortest path towards its objective, using an implementation of
 	 * Dijkstra's algorithm to calculate the shortest path.

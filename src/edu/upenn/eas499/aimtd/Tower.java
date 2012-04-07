@@ -34,6 +34,11 @@ public abstract class Tower {
 	}
 	
 	
+	///// Getter methods /////
+	public int getFireDamage() { return _fireDamage; }
+	public int getFireSpeed() { return _fireSpeed; }
+	
+	
 	///// Public methods /////
 	/**
 	 * @param x The target's x position.

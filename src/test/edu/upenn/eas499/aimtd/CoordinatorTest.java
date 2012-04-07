@@ -12,7 +12,7 @@ public class CoordinatorTest {
 	private Map _map1, _map2;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		_map1 = new Map(new int[][]{	{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
 										{1,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
 										{0,1,0,1,1,1,1,1,1,1,1,1,1,1,2},
