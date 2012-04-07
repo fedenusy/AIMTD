@@ -41,7 +41,7 @@ public class CoordinatorTest {
 										{0,8,0,8,0,0,0,1,8,0,0,0,0,0,0,1,0,0,0,0},
 										{0,0,0,0,1,1,1,1,8,0,0,0,0,0,0,1,1,1,1,0},
 										{0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1,0},
-										{0,0,0,1 ,1,0,0,1,0,0,0,1,1,0,0,0,0,0,1,0},
+										{0,0,0,1,1,0,0,1,0,0,0,1,1,0,0,0,0,0,1,0},
 										{0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0},
 										{0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0},
 										{0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,0},
@@ -86,13 +86,19 @@ public class CoordinatorTest {
 		
 		Monster monster1 = new MonsterImpl(3, 12, 75, 10);
 		monster1.addWaypoint(4, 11);
+		monster1.addWaypoint(5, 9);
+		monster1.addWaypoint(5, 10);
 		coordinator.addMonster(monster1);
 		
 		for (int i=0; i<14; i++) coordinator.tick();
 		assertTrue(monster1.getRoundedX() == 4); assertTrue(monster1.getRoundedY() == 11);
 		
-		for (int i=0; i<200; i++) coordinator.tick();
+		for (int i=0; i<25; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 5); assertTrue(monster1.getRoundedY() == 10);
+		
+		for (int i=0; i<500; i++) coordinator.tick();
 		assertTrue(monster1.getRoundedX() == 1); assertTrue(monster1.getRoundedY() == 19);
+		assertTrue(monster1.reachedObjective());
 	}
 	
 }

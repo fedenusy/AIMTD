@@ -126,6 +126,10 @@ class Pathfinder {
 		while (wp != null) {
 			waypointTile = _map.getTile(wp.getX(), wp.getY());
 			if (waypointTile != null && waypointTile.getCost() != Double.MAX_VALUE) break;
+			else {
+				waypointTile = null;
+				_monster.removeWaypoint(wp);
+			}
 			wp = _monster.getWaypoint();
 		}
 		return waypointTile;

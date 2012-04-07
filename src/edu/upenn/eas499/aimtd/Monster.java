@@ -112,6 +112,10 @@ public abstract class Monster {
 		}		
 	}
 	
+	void removeWaypoint(Waypoint wp) {
+		_waypoints.remove(wp);
+	}
+	
 	
 	///// Private methods /////
 	private boolean reachedX(int x) {
