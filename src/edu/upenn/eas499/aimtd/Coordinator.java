@@ -11,7 +11,7 @@ public class Coordinator {
 
 	///// Instance variables ////
 	private Map _map;
-	private ArrayList<Monster> _monsters;
+	private ArrayList<Monster> _monsters, _monstersUpdated;
 	private ArrayList<Tower> _towers;
 	private int _intelligenceLevel;
 	
@@ -52,8 +52,11 @@ public class Coordinator {
 	 * to tick().
 	 */
 	public void tick() {
-		_map.resetTilesDamage();
 		updateTilesDamage();
+		
+		_monstersUpdated = new ArrayList<Monster>();
+		_monstersUpdated.addAll(_monsters);
+		
 		for (Monster monster : _monsters) {
 			if (monster.reachedObjective()) continue;
 			monster.startNewTurn();
@@ -61,6 +64,8 @@ public class Coordinator {
 			else if (_intelligenceLevel == 2) survivalAwareMove(monster);
 			else if (_intelligenceLevel == 3) groupTacticMove(monster);
 		}
+		
+		_monsters = _monstersUpdated;
 	}
 	
 	
@@ -69,7 +74,10 @@ public class Coordinator {
 	 * Updates how much damage a Monster standing on a Tile can receive within a tick().
 	 */
 	private void updateTilesDamage() {
+		_map.resetTilesDamage();
+		
 		for (Tile tile : _map.getNodes()) {
+			if (!tile.isWalkable()) continue;
 			for (Tower tower : _towers) {
 				if (tower.reaches(tile.getX(), tile.getY())) {
 					double damage = tile.getDamage();
@@ -95,6 +103,7 @@ public class Coordinator {
 			monster.moveTowards(nextTile.getX(), nextTile.getY());
 			if (nextTile.isObjective() && monster.canMove()) {
 				monster.setReachedObjective(true);
+				_monstersUpdated.remove(monster);
 				break;
 			}
 		}
@@ -107,7 +116,8 @@ public class Coordinator {
 	 * If all paths are likely to get the Monster killed, this method becomes analogous to shortestPathMove().
 	 */
 	private void survivalAwareMove(Monster monster) {
-		
+		Pathfinder pathfinder = new Pathfinder(monster, _map, true);
+		moveMonster(monster, pathfinder);
 	}
 	
 	/**

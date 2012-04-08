@@ -5,6 +5,11 @@ import java.util.PriorityQueue;
 
 import edu.upenn.eas499.aimtd.Monster.Waypoint;
 
+/**
+ * Calculates the optimal path for a Monster using one of various methods.
+ * @author fedenusy
+ *
+ */
 class Pathfinder {
 
 	///// Instance variables /////
@@ -23,9 +28,11 @@ class Pathfinder {
 		
 		initializeNodes();
 		if (!survivalAware) calculateDijkstra();
+		else if (survivalAware) calculateSurvivalPath();
 	}
 	
 	private void initializeNodes() {
+		clearTiles();
 		updateCurrentNode();
 		if (_currentNode == null) {
 			String exception = "Monster is located on an invalid map coordinate: ";
@@ -55,12 +62,12 @@ class Pathfinder {
 		return objective;
 	}
 	
-	void clearTiles() {
+	
+	///// Private methods /////
+	private void clearTiles() {
 		for (Tile node : _nodes) node.setPrevious(null);
 	}
 	
-	
-	///// Private methods /////
 	private void updateCurrentNode() {
 		int xPos = _monster.getRoundedX();
 		int yPos = _monster.getRoundedY();
@@ -106,6 +113,10 @@ class Pathfinder {
 				}
 			}
 		}
+	}
+	
+	private void calculateSurvivalPath() {
+		//TODO
 	}
 	
 	// Returns the Monster's next objective, or null if no objective is reachable

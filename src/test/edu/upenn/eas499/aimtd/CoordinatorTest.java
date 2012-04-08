@@ -52,7 +52,7 @@ public class CoordinatorTest {
 	}
 
 	@Test
-	public void testShortestPathBasic() {
+	public void testShortestPath() {
 		Coordinator coordinator = new Coordinator(_map1, 1);
 		
 		Monster monster1 = new MonsterImpl(12, 2, 75, 100);
