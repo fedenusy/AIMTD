@@ -101,4 +101,51 @@ public class CoordinatorTest {
 		assertTrue(monster1.reachedObjective());
 	}
 	
+	@Test
+	public void testSurvivalPathNoDamage() {
+		Coordinator coordinator = new Coordinator(_map2, 2);
+		
+		Monster monster1 = new MonsterImpl(3, 12, 75, 10);
+		monster1.addWaypoint(4, 11);
+		monster1.addWaypoint(5, 9);
+		monster1.addWaypoint(5, 10);
+		coordinator.addMonster(monster1);
+		
+		Tower tower1 = new TowerImpl(0, 0, 20, 100, 1);
+		coordinator.addTower(tower1);
+		
+		for (int i=0; i<14; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 4); assertTrue(monster1.getRoundedY() == 11);
+		
+		for (int i=0; i<25; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 5); assertTrue(monster1.getRoundedY() == 10);
+		
+		for (int i=0; i<500; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 1); assertTrue(monster1.getRoundedY() == 19);
+		assertTrue(monster1.reachedObjective());
+	}
+	
+	@Test
+	public void testSurvivalPath() {
+		Coordinator coordinator = new Coordinator(_map2, 2);
+		
+		Monster monster1 = new MonsterImpl(3, 12, 75, 10);
+		monster1.addWaypoint(4, 11);
+		monster1.addWaypoint(5, 9);
+		monster1.addWaypoint(5, 10);
+		coordinator.addMonster(monster1);
+		
+		Tower tower1 = new TowerImpl(2, 17, 20, 100, 1);
+		coordinator.addTower(tower1);
+		
+		for (int i=0; i<14; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 4); assertTrue(monster1.getRoundedY() == 11);
+		
+		for (int i=0; i<25; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 5); assertTrue(monster1.getRoundedY() == 10);
+		
+		for (int i=0; i<500; i++) coordinator.tick();
+		assertFalse(monster1.getRoundedX() == 1); assertFalse(monster1.getRoundedY() == 19);
+	}
+	
 }

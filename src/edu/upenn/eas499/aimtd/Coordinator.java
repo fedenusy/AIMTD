@@ -18,14 +18,25 @@ public class Coordinator {
 	
 	///// Constructors /////
 	/**
+	 * 
 	 * @param map The map over which the coordinator should base its decisions.
+	 * @param intelligenceLevel The Coordinator's intelligence level, which defines Monster movement:<br/>
+	 * Intelligence level 1: Each monster will move towards the closest objective.<br/>
+	 * Intelligence level 2: Each monster will follow the path towards the objective that's least likely to get the monster killed.<br/>
+	 * Intelligence level 3: An improvement on intelligence level 2, where monsters make group decisions to increase their likelihood
+	 * of reaching their objectives.
 	 */
 	public Coordinator(Map map, int intelligenceLevel) {
 		_map = map;
 		_monsters = new ArrayList<Monster>();
 		_towers = new ArrayList<Tower>();
 		_intelligenceLevel = intelligenceLevel;
-		if (intelligenceLevel != 1) _intelligenceLevel = 1;
+		
+		if (_intelligenceLevel!=1 && _intelligenceLevel!=2 && _intelligenceLevel!=3) {
+			System.err.println("AIMTD Error: invalid Coordinator inelligence level " + _intelligenceLevel
+					+ "; defaulting to intelligence level 1.");
+			_intelligenceLevel = 1;
+		}
 	}
 
 	
@@ -71,7 +82,7 @@ public class Coordinator {
 	
 	///// Private methods /////
 	/**
-	 * Updates how much damage a Monster standing on a Tile can receive within a tick().
+	 * Updates how much damage a Monster standing on a Tile can receive within a tick.
 	 */
 	private void updateTilesDamage() {
 		_map.resetTilesDamage();
@@ -80,9 +91,9 @@ public class Coordinator {
 			if (!tile.isWalkable()) continue;
 			for (Tower tower : _towers) {
 				if (tower.reaches(tile.getX(), tile.getY())) {
-					double damage = tile.getDamage();
+					double damage = tile.getDamageCost();
 					damage += tower.getFireDamage() * tower.getFireSpeed() / 100;
-					tile.setDamage(damage);
+					tile.setDamageCost(damage);
 				}
 			}
 		}

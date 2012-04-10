@@ -50,7 +50,6 @@ public abstract class Monster {
 	public float getX() { return _x; }
 	public float getY() { return _y; }
 	public int getHp() { return _hp; }
-	public int getSpeed() { return _moveSpeed; }
 	public boolean reachedObjective() { return _reachedObjective; }
 	public int getRoundedX() { return Math.round(_x); }
 	public int getRoundedY() { return Math.round(_y); }
@@ -74,12 +73,24 @@ public abstract class Monster {
 	
 	
 	///// Package-protected methods /////
+	/**
+	 * Measure of the Euclidean distance this monster can cover per tick.
+	 * @return The monster's speed.
+	 */
+	double getSpeed() { 
+		return _moveSpeed / 100.0;
+	}
+	
+	/**
+	 * Allows this Monster to move once again; method should be called before each new tick().
+	 */
 	void startNewTurn() {
 		_movesLeft = _moveSpeed;
 	}
 	
 	/**
-	 * @return The next Waypoint, after removing it from the monster's list of Waypoints.
+	 * Gets the next Waypoint in the Monster's list, removing the Waypoint after it's been reached.
+	 * @return The next Waypoint.
 	 */
 	Waypoint getWaypoint() {
 		if (_waypoints.isEmpty()) return null;
@@ -91,10 +102,19 @@ public abstract class Monster {
 		return wp;
 	}
 	
+	/**
+	 * Whether this Monster can still move within this tick.
+	 * @return Whether the monster can still move.
+	 */
 	boolean canMove() {
 		return _movesLeft > 0;
 	}
 
+	/**
+	 * Iteratively moves the Monster towards the specified coordinates.
+	 * @param x The target x-coordinate.
+	 * @param y The target y-coordinate.
+	 */
 	void moveTowards(int x, int y) {
 		double yDirection = y - _y; //positive or negative
 		double xDirection = x - _x; //positive or negative
@@ -112,6 +132,10 @@ public abstract class Monster {
 		}		
 	}
 	
+	/**
+	 * Removes a Waypoint from the monster's list of Waypoints.
+	 * @param wp The Waypoint to be removed.
+	 */
 	void removeWaypoint(Waypoint wp) {
 		_waypoints.remove(wp);
 	}

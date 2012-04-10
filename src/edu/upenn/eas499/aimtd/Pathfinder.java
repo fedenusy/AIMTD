@@ -17,7 +17,7 @@ class Pathfinder {
 	private Monster _monster;
 	private ArrayList<Tile> _nodes;
 	private Tile _currentNode;
-	
+	private boolean _survivalAware;
 	
 	///// Constructors /////
 	Pathfinder(Monster monster, Map map, boolean survivalAware) {
@@ -25,25 +25,11 @@ class Pathfinder {
 		_map = map;
 		_nodes = new ArrayList<Tile>();
 		_nodes.addAll(_map.getNodes());
+		_survivalAware = survivalAware;
 		
-		initializeNodes();
-		if (!survivalAware) calculateDijkstra();
-		else if (survivalAware) calculateSurvivalPath();
+		calculateOptimalPath();
+		checkOptimalPath();
 	}
-	
-	private void initializeNodes() {
-		clearTiles();
-		updateCurrentNode();
-		if (_currentNode == null) {
-			String exception = "Monster is located on an invalid map coordinate: ";
-			exception += "(" + _monster.getRoundedX() + ", " + _monster.getRoundedY() + ")";
-			throw new IllegalArgumentException(exception);
-		}
-		for (Tile node : _nodes) {
-			if (!node.equals(_currentNode)) node.setCost(Double.MAX_VALUE);
-		}
-	}
-	
 	
 	///// Package-protected methods /////
 	/**
@@ -64,39 +50,9 @@ class Pathfinder {
 	
 	
 	///// Private methods /////
-	private void clearTiles() {
-		for (Tile node : _nodes) node.setPrevious(null);
-	}
-	
-	private void updateCurrentNode() {
-		int xPos = _monster.getRoundedX();
-		int yPos = _monster.getRoundedY();
+	private void calculateOptimalPath() {
+		initializeNodes();
 		
-		_currentNode = _map.getTile(xPos, yPos);
-		
-		if (!validCurrentNode()) {
-			if (xPos < _monster.getX()) xPos = (int) Math.ceil(_monster.getX());
-			else xPos = (int) Math.floor(_monster.getX());
-			_currentNode = _map.getTile(xPos, yPos);
-		}
-		
-		if (!validCurrentNode()) {
-			xPos = _monster.getRoundedX();
-			if (yPos < _monster.getX()) yPos = (int) Math.ceil(_monster.getY());
-			else yPos = (int) Math.floor(_monster.getY());
-			_currentNode = _map.getTile(xPos, yPos);
-		}
-		
-		if (!validCurrentNode()) throw new IllegalArgumentException("Monster located on an invalid tile.");
-		
-		_currentNode.setCost(0);
-	}
-	
-	private boolean validCurrentNode() {
-		return _currentNode != null && _currentNode.isWalkable();
-	}
-	
-	private void calculateDijkstra() {
 		PriorityQueue<Tile> nodeQueue = new PriorityQueue<Tile>();
 		nodeQueue.addAll(_nodes);
 		
@@ -104,7 +60,7 @@ class Pathfinder {
 			Tile node = nodeQueue.poll();
 			if (node.getCost() == Double.MAX_VALUE) break;
 			for (Tile neighbor : _map.getNeighbors(node)) {
-				double altCost = node.getCost() + node.distanceTo(neighbor);
+				double altCost = getAltCost(node, neighbor);
 				if (altCost < neighbor.getCost()) {
 					nodeQueue.remove(neighbor);
 					neighbor.setCost(altCost);
@@ -115,8 +71,51 @@ class Pathfinder {
 		}
 	}
 	
-	private void calculateSurvivalPath() {
-		//TODO
+	private void initializeNodes() {
+		for (Tile node : _nodes) node.setPrevious(null);
+		updateCurrentNode();
+		_currentNode.setCost(0);
+		for (Tile node : _nodes) {
+			if (!node.equals(_currentNode)) node.setCost(Double.MAX_VALUE);
+		}
+	}
+	
+	private void updateCurrentNode() {
+		int xPos = _monster.getRoundedX();
+		int yPos = _monster.getRoundedY();
+		
+		_currentNode = _map.getTile(xPos, yPos);
+		if (!validCurrentNode()) {
+			if (xPos < _monster.getX()) xPos = (int) Math.ceil(_monster.getX());
+			else xPos = (int) Math.floor(_monster.getX());
+			_currentNode = _map.getTile(xPos, yPos);
+		}
+		if (!validCurrentNode()) {
+			xPos = _monster.getRoundedX();
+			if (yPos < _monster.getX()) yPos = (int) Math.ceil(_monster.getY());
+			else yPos = (int) Math.floor(_monster.getY());
+			_currentNode = _map.getTile(xPos, yPos);
+		}
+		
+		if (!validCurrentNode()) 
+			throw new IllegalArgumentException("Monster located on an invalid tile; coordinates (" + 
+					_currentNode.getX() + "," + _currentNode.getY() + ")");
+	}
+	
+	private boolean validCurrentNode() {
+		return _currentNode != null && _currentNode.isWalkable();
+	}
+	
+	private double getAltCost(Tile node, Tile neighbor) {
+		if (!_survivalAware){
+			double distanceCost = node.getCost();
+			distanceCost += node.distanceTo(neighbor);
+			return distanceCost;
+		} else {
+			double damageCost = node.getCost();
+			damageCost += node.getDamageCost() * (node.distanceTo(neighbor) / _monster.getSpeed());
+			return damageCost;
+		}
 	}
 	
 	// Returns the Monster's next objective, or null if no objective is reachable
@@ -144,6 +143,22 @@ class Pathfinder {
 			wp = _monster.getWaypoint();
 		}
 		return waypointTile;
+	}
+	
+	// Checks whether a survivalAware path was calculated when no towers are present; if so, the path is recalculated
+	// using the shortest-path version
+	private void checkOptimalPath() {
+		if (!_survivalAware) return;
+		
+		boolean foundCostlyTile = false;
+		for (Tile objective : _map.getObjectives()) {
+			if (objective.getCost() > 0) foundCostlyTile = true;
+		}
+
+		if (!foundCostlyTile) {
+			_survivalAware = false;
+			calculateOptimalPath();
+		}
 	}
 	
 }

@@ -138,7 +138,7 @@ public class Map {
 	void resetTilesDamage() {
 		for (Tile[] tileColumn : _tiles) {
 			for (Tile tile : tileColumn) {
-				tile.setDamage(0);
+				tile.setDamageCost(0);
 			}
 		}
 	}

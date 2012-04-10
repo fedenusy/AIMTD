@@ -46,7 +46,7 @@ public abstract class Tower {
 	 * @return Whether this tower's projectiles reach the given coordinates.
 	 */
 	public boolean reaches(int x, int y) {
-		return (_fireRange >= Math.sqrt((_x-x)^2-(_y-y)^2));
+		return ( _fireRange >= Math.sqrt( Math.pow(_x-x,2)-Math.pow(_y-y, 2) ) );
 	}
 	
 }
