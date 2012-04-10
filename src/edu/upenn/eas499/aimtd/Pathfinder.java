@@ -112,7 +112,7 @@ class Pathfinder {
 			return distanceCost;
 		} else {
 			double damageCost = node.getCost();
-			damageCost += node.getDamageCost() * (node.distanceTo(neighbor) / _monster.getSpeed());
+			damageCost += node.getDamageCost() * (node.distanceTo(neighbor) / _monster.getDistanceCoverage());
 			damageCost += node.distanceTo(neighbor) / 1000;
 			return damageCost;
 		}

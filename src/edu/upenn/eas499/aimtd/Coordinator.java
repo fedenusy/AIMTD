@@ -92,7 +92,7 @@ public class Coordinator {
 			for (Tower tower : _towers) {
 				if (tower.reaches(tile.getX(), tile.getY())) {
 					double damage = tile.getDamageCost();
-					damage += tower.getFireDamage() * tower.getFireSpeed() / 100;
+					damage += tower.getFireDamage() * tower.getFireRate() / 100;
 					tile.setDamageCost(damage);
 				}
 			}

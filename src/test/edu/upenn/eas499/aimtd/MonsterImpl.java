@@ -8,4 +8,8 @@ public class MonsterImpl extends Monster {
 		super(x, y, hp, moveSpeed);
 	}
 
+	@Override
+	public MonsterImpl clone() {
+		return new MonsterImpl(getRoundedX(), getRoundedY(), getHp(), getSpeed());
+	}
 }

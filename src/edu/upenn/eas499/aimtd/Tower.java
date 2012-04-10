@@ -11,7 +11,7 @@ public abstract class Tower {
 	///// Instance variables /////
 	private int _x, _y;
 	private int _fireDamage;
-	private int _fireSpeed;
+	private int _fireRate;
 	private int _fireRange;
 	
 	
@@ -25,18 +25,21 @@ public abstract class Tower {
 	 * tower can fire off 2 projectiles within a single tick.
 	 * @param fireRange The tower's firing radius.
 	 */
-	public Tower(int x, int y, int fireDamage, int firingRate, int fireRange) {
+	public Tower(int x, int y, int fireDamage, int fireRate, int fireRange) {
 		_x = x;
 		_y = y;
 		_fireDamage = fireDamage;
-		_fireSpeed = firingRate;
+		_fireRate = fireRate;
 		_fireRange = fireRange;
 	}
 	
 	
 	///// Getter methods /////
 	public int getFireDamage() { return _fireDamage; }
-	public int getFireSpeed() { return _fireSpeed; }
+	public int getFireRate() { return _fireRate; }
+	public int getFireRange() { return _fireRange; }
+	public int getX() { return _x; }
+	public int getY() { return _y; }
 	
 	
 	///// Public methods /////

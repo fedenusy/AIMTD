@@ -53,6 +53,7 @@ public abstract class Monster {
 	public boolean reachedObjective() { return _reachedObjective; }
 	public int getRoundedX() { return Math.round(_x); }
 	public int getRoundedY() { return Math.round(_y); }
+	public int getSpeed() { return _moveSpeed; }
 	
 	
 	///// Setter methods /////
@@ -77,7 +78,7 @@ public abstract class Monster {
 	 * Measure of the Euclidean distance this monster can cover per tick.
 	 * @return The monster's speed.
 	 */
-	double getSpeed() { 
+	double getDistanceCoverage() { 
 		return _moveSpeed / 100.0;
 	}
 	
