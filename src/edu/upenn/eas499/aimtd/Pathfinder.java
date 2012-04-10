@@ -28,7 +28,6 @@ class Pathfinder {
 		_survivalAware = survivalAware;
 		
 		calculateOptimalPath();
-		checkOptimalPath();
 	}
 	
 	///// Package-protected methods /////
@@ -114,6 +113,7 @@ class Pathfinder {
 		} else {
 			double damageCost = node.getCost();
 			damageCost += node.getDamageCost() * (node.distanceTo(neighbor) / _monster.getSpeed());
+			damageCost += node.distanceTo(neighbor) / 1000;
 			return damageCost;
 		}
 	}
@@ -143,22 +143,6 @@ class Pathfinder {
 			wp = _monster.getWaypoint();
 		}
 		return waypointTile;
-	}
-	
-	// Checks whether a survivalAware path was calculated when no towers are present; if so, the path is recalculated
-	// using the shortest-path version
-	private void checkOptimalPath() {
-		if (!_survivalAware) return;
-		
-		boolean foundCostlyTile = false;
-		for (Tile objective : _map.getObjectives()) {
-			if (objective.getCost() > 0) foundCostlyTile = true;
-		}
-
-		if (!foundCostlyTile) {
-			_survivalAware = false;
-			calculateOptimalPath();
-		}
 	}
 	
 }

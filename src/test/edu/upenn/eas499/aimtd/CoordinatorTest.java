@@ -144,8 +144,9 @@ public class CoordinatorTest {
 		for (int i=0; i<25; i++) coordinator.tick();
 		assertTrue(monster1.getRoundedX() == 5); assertTrue(monster1.getRoundedY() == 10);
 		
-		for (int i=0; i<500; i++) coordinator.tick();
-		assertFalse(monster1.getRoundedX() == 1); assertFalse(monster1.getRoundedY() == 19);
+		for (int i=0; i<1000; i++) coordinator.tick();
+		assertTrue(monster1.getRoundedX() == 19); assertTrue(monster1.getRoundedY() == 19);
+		assertTrue(monster1.reachedObjective());
 	}
 	
 }

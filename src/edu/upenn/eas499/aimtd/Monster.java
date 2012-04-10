@@ -143,11 +143,11 @@ public abstract class Monster {
 	
 	///// Private methods /////
 	private boolean reachedX(int x) {
-		return (x - _x) >= -.005 && (x - _x) <= .005;
+		return (x - _x) >= -.01 && (x - _x) <= .01;
 	}
 	
 	private boolean reachedY(int y) {
-		return (y - _y) >= -.005 && (y - _y) <= .005;
+		return (y - _y) >= -.01 && (y - _y) <= .01;
 	}
 	
 	private boolean reachedCoords(int x, int y) {
