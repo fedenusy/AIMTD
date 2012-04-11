@@ -44,6 +44,7 @@ class Pathfinder {
 			objective = previous;
 			previous = objective.getPrevious();
 		}
+		
 		return objective;
 	}
 	

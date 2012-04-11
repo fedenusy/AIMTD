@@ -1,5 +1,7 @@
 package test.edu.upenn.eas499.aimtd;
 
+import java.util.ArrayList;
+
 import edu.upenn.eas499.aimtd.Coordinator;
 import edu.upenn.eas499.aimtd.Map;
 import edu.upenn.eas499.aimtd.Monster;
@@ -30,7 +32,7 @@ public class Simulator {
 		int numGames = new Integer(args[0]);
 		int intLevel = new Integer(args[1]);
 		
-		double totalLivesLeft = 0.0;
+		ArrayList<Integer> results = new ArrayList<Integer>();
 		for (int i=0; i<numGames; i++) {
 			System.out.print("Beginning simulation #" + (i+1) + "... ");
 			
@@ -38,11 +40,25 @@ public class Simulator {
 			SimulatedPlayer player = new SimulatedPlayer(coordinator, _map);
 			simulateGame(coordinator, player);
 			
-			if (player.hasLives()) totalLivesLeft += player.getLives();
+			if (player.hasLives()) results.add(player.getLives());
+			else results.add(0);
+			
 			System.out.println(player.getLives() + " lives left.");
 		}
 		
-		System.out.println("Average lives left: " + totalLivesLeft / numGames);
+		System.out.println();
+		System.out.println("##### SUMMARY STATISTICS #####");
+		System.out.println("Number of simulations: " + numGames);
+		
+		double avgLives = 0.0;
+		for (int lives : results) avgLives += lives;
+		avgLives = avgLives / numGames;
+		System.out.println("Average lives left: " + avgLives);
+		
+		double stDev = 0.0;
+		for (int lives : results) stDev += Math.pow(lives - avgLives, 2);
+		stDev = Math.sqrt(stDev / results.size());
+		System.out.println("Standard deviation: " + stDev);
 	}
 	
 	private static void simulateGame(Coordinator coordinator, SimulatedPlayer player) {

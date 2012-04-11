@@ -15,6 +15,7 @@ public class SimulatedPlayer {
 	private ArrayList<TowerImpl> _towers;
 	private int _lives;
 	private int _resources;
+	private int _killReward;
 	private int _towerCost;
 	private int _towerDamage;
 	private int _towerSpeed;
@@ -29,9 +30,10 @@ public class SimulatedPlayer {
 		
 		_lives = 100;
 		_resources = 1000;
+		_killReward = 30;
 		
 		_towerCost = 250;
-		_towerDamage = 15;
+		_towerDamage = 25;
 		_towerSpeed = 100;
 		_towerRange = 2;
 		
@@ -60,7 +62,7 @@ public class SimulatedPlayer {
 				reachedObjective.add(monster);
 			} else if (!monster.isAlive()) {
 				dead.add(monster);
-				_resources += 125;
+				_resources += _killReward;
 			}
 		}
 		for (Monster monster : reachedObjective) _coordinator.removeMonster(monster);
