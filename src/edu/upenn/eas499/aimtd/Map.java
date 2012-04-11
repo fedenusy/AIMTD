@@ -99,7 +99,30 @@ public class Map {
 	
 	
 	///// Public methods /////
+	/**
+	 * Determines the type of tile at the specified coordinate.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @return 0 if this is a Field tile, 1 if this is a Road tile, 2 if this is an Objective tile,
+	 * 8 if this is a rock Tile, or -1 if the coordinate is out of bounds.
+	 */
+	public int getTileType(int x, int y) {
+		Tile tile = getTile(x, y);
+		if (tile==null) return -1;
+		else if (tile.isObjective()) return 2;
+		else if (tile.isWalkable()) return 1;
+		else return 8;
+	}
 	
+	public Tile getRandomFieldTile() {
+		Tile randomFieldTile = null;
+		while (randomFieldTile==null) {
+			int x = (int) Math.floor(Math.random() * _tiles.length);
+			int y = (int) Math.floor(Math.random() * _tiles[0].length);
+			randomFieldTile = getTile(x, y);
+		}
+		return randomFieldTile;
+	}
 	
 	///// Package-protected methods /////
 	/**

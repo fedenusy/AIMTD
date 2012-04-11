@@ -58,6 +58,7 @@ public abstract class Monster {
 	
 	///// Setter methods /////
 	void setReachedObjective(boolean reachedObjective) { _reachedObjective = reachedObjective; }
+	public void setHp(int hp) { _hp = hp; }
 	
 	
 	///// Public methods /////
@@ -70,6 +71,23 @@ public abstract class Monster {
 	public void addWaypoint(int x, int y) {
 		Waypoint wp = new Waypoint(x, y);
 		_waypoints.add(wp);
+	}
+	
+	/**
+	 * Whether this Monster's HP is greater than 0.
+	 * @return Whether this monster still lives.
+	 */
+	public boolean isAlive() {
+		return _hp > 0;
+	}
+	
+	/**
+	 * Decreases this Monster's HP by a determined amount.
+	 * @param dmg The amount this monster's hit points should decrease by.
+	 */
+	public void damage(int dmg) {
+		int hp = getHp() - dmg;
+		setHp(hp);
 	}
 	
 	

@@ -44,6 +44,7 @@ public abstract class Tower {
 	
 	///// Public methods /////
 	/**
+	 * Determines whether this Tower reaches a given coordinate.
 	 * @param x The target's x position.
 	 * @param y The target's y position.
 	 * @return Whether this tower's projectiles reach the given coordinates.
@@ -53,4 +54,14 @@ public abstract class Tower {
 		return _fireRange >= distance;
 	}
 	
+	/**
+	 * Determines whether this Tower reaches a given coordinate.
+	 * @param x The target's x position.
+	 * @param y The target's y position.
+	 * @return Whether this tower's projectiles reach the given coordinates.
+	 */
+	public boolean reaches(double x, double y) {
+		double distance = Math.sqrt( Math.pow(_x-x,2) + Math.pow(_y-y, 2) );
+		return _fireRange >= distance;
+	}
 }

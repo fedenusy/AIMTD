@@ -5,7 +5,7 @@ package edu.upenn.eas499.aimtd;
  * @author fedenusy
  *
  */
-class Tile implements Comparable<Tile> {
+public class Tile implements Comparable<Tile> {
 	
 	///// Monsters travel over ROAD tiles in an attempt to reach
 	///// an OBJECTIVE tile.
@@ -35,8 +35,8 @@ class Tile implements Comparable<Tile> {
 	
 	///// Getter methods /////
 	Type getType() { return _type; }
-	int getX() { return _x; }
-	int getY() { return _y; }
+	public int getX() { return _x; }
+	public int getY() { return _y; }
 	double getCost() { return _cost; }
 	/**
 	 * Gets the maximum amount of damage a monster standing on this Tile could receive within a
@@ -66,6 +66,10 @@ class Tile implements Comparable<Tile> {
 	 */
 	boolean isObjective() {
 		return _type.equals(Type.OBJECTIVE);
+	}
+	
+	boolean isField() {
+		return _type.equals(Type.FIELD);
 	}
 	
 	/**
