@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * The TD map.
+ * Grid-based representation of the relevant coordinates in a TD level map.
  * @author fedenusy
  *
  */
@@ -27,9 +27,9 @@ public class Map {
 	
 	/**
 	 * @param layout The layout of the map represented as an array of rows; rows are themselves arrays 
-	 * of integers. Within rows, 0s represent Field tiles (upon which towers can be built), 1s 
-	 * represent Road tiles (upon which monsters can travel), and 2s represent Objective tiles (which 
-	 * monsters are trying to reach). 8s represent Rock tiles, which are dead space. For AIMTD's purposes, 
+	 * of integers. Within rows, 0s represent Field coordinates (upon which towers could be built), 1s 
+	 * represent Road coordinates (upon which monsters can travel), and 2s represent Objective coordinates (which 
+	 * monsters are trying to reach). 8s represent Rock coordinates, which are dead space. For AIMTD's purposes, 
 	 * the map will be built as a square with length=(# of row arrays) and width=(# of integers in the first row). 
 	 * Undefined row integers will be treated as Rocks. Example 5x5 map layout:
 	 * new int[][] {	{1,1,0,0,0},
@@ -37,12 +37,11 @@ public class Map {
 	 * 					{0,1,1,8,0},
 	 * 					{0,0,0,1,0},
 	 * 					{0,0,0,0,2} };
-	 * @param generateEdges Whether to automatically generate the edges between Road/Objective tiles and other 
-	 * adjacent Road/Objective tiles, including diagonals. Monsters can only travel between two Road/Objective tiles 
-	 * if there exists an edge between them.
+	 * @param allowDiagonalMovement Whether the Map should allow Monsters to travel between diagonally adjacent 
+	 * coordinates.
 	 * 
 	 */
-	public Map(int[][] layout, boolean generateEdges) {
+	public Map(int[][] layout, boolean allowDiagonalMovement) {
 		if (layout==null || layout[0]==null) throw new IllegalArgumentException("Invalid map layout");
 		
 		int length = layout.length;
@@ -53,7 +52,7 @@ public class Map {
 		
 		_edges = new HashMap<Tile, ArrayList<Tile>>();
 		generateNodes();
-		if (generateEdges) generateEdges();
+		generateEdges(allowDiagonalMovement);
 	}
 	
 	private void generateTiles(int[][] layout) {
@@ -80,12 +79,13 @@ public class Map {
 		}
 	}
 	
-	private void generateEdges() {
+	private void generateEdges(boolean generateDiagonals) {
 		for (Tile node : _edges.keySet()) {
 			int x = node.getX();
 			int y = node.getY();
 			for (int offX=-1; offX<=1; offX++) {
 				for (int offY=-1; offY<=1; offY++) {
+					if (!generateDiagonals && Math.abs(offX+offY)>1) continue;
 					try { 
 						Tile candidateNeighbor = _tiles[x+offX][y+offY];
 						createEdge(node, candidateNeighbor, false);

@@ -53,10 +53,10 @@ public class CoordinatorTest {
 
 	@Test
 	public void testShortestPath() {
-		Coordinator coordinator = new Coordinator(_map1, 1);
+		Coordinator coordinator = new Coordinator(_map1);
 		
-		Monster monster1 = new MonsterImpl(12, 2, 75, 100);
-		Monster monster2 = new MonsterImpl(11, 2, 75, 200);
+		Monster monster1 = new MonsterImpl(12, 2, 75, 100, 1);
+		Monster monster2 = new MonsterImpl(11, 2, 75, 200, 1);
 		coordinator.addMonster(monster1);
 		coordinator.addMonster(monster2);
 		
@@ -64,8 +64,8 @@ public class CoordinatorTest {
 		assertTrue(monster1.getRoundedX() == 13); assertTrue(monster1.getRoundedY() == 2);
 		assertTrue(monster2.getRoundedX() == 13); assertTrue(monster2.getRoundedY() == 2);
 		
-		Monster monster3 = new MonsterImpl(11, 6, 75, 150);
-		Monster monster4 = new MonsterImpl(12, 8, 75, 230);
+		Monster monster3 = new MonsterImpl(11, 6, 75, 150, 1);
+		Monster monster4 = new MonsterImpl(12, 8, 75, 230, 1);
 		coordinator.addMonster(monster3);
 		coordinator.addMonster(monster4);
 		
@@ -82,9 +82,9 @@ public class CoordinatorTest {
 
 	@Test
 	public void testShortestPathWaypoints() {
-		Coordinator coordinator = new Coordinator(_map2, 1);
+		Coordinator coordinator = new Coordinator(_map2);
 		
-		Monster monster1 = new MonsterImpl(3, 12, 75, 10);
+		Monster monster1 = new MonsterImpl(3, 12, 75, 10, 1);
 		monster1.addWaypoint(4, 11);
 		monster1.addWaypoint(5, 9);
 		monster1.addWaypoint(5, 10);
@@ -103,9 +103,9 @@ public class CoordinatorTest {
 	
 	@Test
 	public void testSurvivalPathNoDamage() {
-		Coordinator coordinator = new Coordinator(_map2, 2);
+		Coordinator coordinator = new Coordinator(_map2);
 		
-		Monster monster1 = new MonsterImpl(3, 12, 75, 10);
+		Monster monster1 = new MonsterImpl(3, 12, 75, 10, 2);
 		monster1.addWaypoint(4, 11);
 		monster1.addWaypoint(5, 9);
 		monster1.addWaypoint(5, 10);
@@ -127,9 +127,9 @@ public class CoordinatorTest {
 	
 	@Test
 	public void testSurvivalPath() {
-		Coordinator coordinator = new Coordinator(_map2, 2);
+		Coordinator coordinator = new Coordinator(_map2);
 		
-		Monster monster1 = new MonsterImpl(3, 12, 75, 10);
+		Monster monster1 = new MonsterImpl(3, 12, 75, 10, 2);
 		monster1.addWaypoint(4, 11);
 		monster1.addWaypoint(5, 9);
 		monster1.addWaypoint(5, 10);

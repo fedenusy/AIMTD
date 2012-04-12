@@ -20,6 +20,7 @@ public abstract class Monster {
 	private float _x, _y;
 	private int _hp;
 	private int _moveSpeed;
+	private int _intelligenceLevel;
 	private double _movesLeft;
 	private boolean _reachedObjective;
 	private ArrayList<Waypoint> _waypoints;
@@ -35,12 +36,19 @@ public abstract class Monster {
 	 * initial position is (1,0), its moveSpeed is 200, and the Coordinator decides that
 	 * the monster should move East, after calling Coordinator.tick() the Monster will be
 	 * located at (3,0).
+	 * @param intelligenceLevel The Monster's intelligence level, which defines Monster movement patterns:<br/>
+	 * Intelligence level 1: The monster will move towards the closest objective.<br/>
+	 * Intelligence level 2: The monster will follow the path towards the objective that's least likely to get the monster killed.<br/>
+	 * Intelligence level 3: An improvement on intelligence level 2, where the Monster makes group decisions in conjunction with other
+	 * nearby level 3 Monsters in order to increase the team's likelihood of reaching an objective.
 	 */
-	public Monster(int x, int y, int hp, int moveSpeed) {
+	public Monster(int x, int y, int hp, int moveSpeed, int intelligenceLevel) {
 		_x = x;
 		_y = y;
 		_hp = hp;
 		_moveSpeed = moveSpeed;
+		_intelligenceLevel = intelligenceLevel;
+		if (_intelligenceLevel < 1 || _intelligenceLevel > 3) _intelligenceLevel = 1;
 		_reachedObjective = false;
 		_waypoints = new ArrayList<Waypoint>();
 	}
@@ -55,9 +63,15 @@ public abstract class Monster {
 	public int getRoundedY() { return Math.round(_y); }
 	public int getSpeed() { return _moveSpeed; }
 	
+	int getIntelligenceLevel() { return _intelligenceLevel; }
+	
 	
 	///// Setter methods /////
 	void setReachedObjective(boolean reachedObjective) { _reachedObjective = reachedObjective; }
+	/**
+	 * Sets the Monster's health points to the given value.
+	 * @param hp The Monster's new amount of health points.
+	 */
 	public void setHp(int hp) { _hp = hp; }
 	
 	

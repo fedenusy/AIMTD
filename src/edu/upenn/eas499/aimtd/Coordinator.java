@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Class responsible for monster movement coordination.
+ * Class responsible for Monster movement coordination.
  * @author fedenusy
  *
  */
@@ -14,30 +14,17 @@ public class Coordinator {
 	private Map _map;
 	private ArrayList<Monster> _monsters;
 	private ArrayList<Tower> _towers;
-	private int _intelligenceLevel;
 	
 	
 	///// Constructors /////
 	/**
-	 * Builds a Coordinator.
-	 * @param map The map over which the coordinator should base its decisions.
-	 * @param intelligenceLevel The Coordinator's intelligence level, which defines Monster movement:<br/>
-	 * Intelligence level 1: Each monster will move towards the closest objective.<br/>
-	 * Intelligence level 2: Each monster will follow the path towards the objective that's least likely to get the monster killed.<br/>
-	 * Intelligence level 3: An improvement on intelligence level 2, where monsters make group decisions to increase their likelihood
-	 * of reaching their objectives.
+	 * Builds a Coordinator for making Monster movement decisions over the given Map.
+	 * @param map The Map over which the coordinator should base its decisions.
 	 */
-	public Coordinator(Map map, int intelligenceLevel) {
+	public Coordinator(Map map) {
 		_map = map;
 		_monsters = new ArrayList<Monster>();
 		_towers = new ArrayList<Tower>();
-		_intelligenceLevel = intelligenceLevel;
-		
-		if (_intelligenceLevel!=1 && _intelligenceLevel!=2 && _intelligenceLevel!=3) {
-			System.err.println("AIMTD Error: invalid Coordinator inelligence level " + _intelligenceLevel
-					+ "; defaulting to intelligence level 1.");
-			_intelligenceLevel = 1;
-		}
 	}
 
 	
@@ -75,7 +62,7 @@ public class Coordinator {
 	}
 	
 	/**
-	 * The collection of monsters this Coordinator is actively manipulating (monsters that are both
+	 * The collection of Monsters this Coordinator is actively manipulating (Monsters that are both
 	 * alive and have not yet reached an objective).
 	 * @return All monsters this Coordinator is manipulating.
 	 */
@@ -114,9 +101,10 @@ public class Coordinator {
 		for (Monster monster : _monsters) {
 			if (monster.reachedObjective()) continue;
 			monster.startNewTurn();
-			if (_intelligenceLevel == 1) shortestPathMove(monster);
-			else if (_intelligenceLevel == 2) survivalAwareMove(monster);
-			else if (_intelligenceLevel == 3) groupTacticMove(monster);
+			int intelligenceLevel = monster.getIntelligenceLevel();
+			if (intelligenceLevel == 1) shortestPathMove(monster);
+			else if (intelligenceLevel == 2) survivalAwareMove(monster);
+			else if (intelligenceLevel == 3) groupTacticMove(monster);
 		}
 	}
 	
