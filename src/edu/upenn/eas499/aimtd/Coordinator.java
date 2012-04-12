@@ -91,9 +91,11 @@ public class Coordinator {
 	}
 	
 	/**
-	 * This method should be called each time the Coordinator has to make Monsters move. See Monster 
-	 * and Tower classes for definitions of moveSpeed and fireSpeed, respectively, and their relationship 
-	 * to tick().
+	 * This method should be called each time the Coordinator has to make Monsters move. Calling the method
+	 * represents the passage of a unit of time in AIMTD's internal clock. After tick() completes, each Monster
+	 * that's active in the Coordinator will have moved according to its position, speed, intelligence level, 
+	 * surrouding Towers, and various other game factors. Please refer to the Monster and Tower classes for 
+	 * definitions of moveSpeed and fireSpeed, respectively, and their relationship to tick().
 	 */
 	public void tick() {
 		updateTilesDamage();

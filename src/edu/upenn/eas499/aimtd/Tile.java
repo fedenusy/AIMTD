@@ -1,7 +1,8 @@
 package edu.upenn.eas499.aimtd;
 
 /**
- * A tile in the TD map.
+ * A Tile in the TD map. This class should be ignored by AIMTD game developers; it's only made public
+ * for the purposes of the Monte Carlo Simulator.
  * @author fedenusy
  *
  */

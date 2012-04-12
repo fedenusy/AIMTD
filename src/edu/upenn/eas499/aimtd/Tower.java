@@ -2,7 +2,6 @@ package edu.upenn.eas499.aimtd;
 
 /**
  * A tower that shoots projectiles at passing monsters within range.
- * By default, towers lock onto Monsters until they leave the shooting range.
  * @author fedenusy
  *
  */
@@ -35,10 +34,34 @@ public abstract class Tower {
 	
 	
 	///// Getter methods /////
+	/**
+	 * Gets this Tower's fire damage.
+	 * @return This Tower's fire damage.
+	 */
 	public int getFireDamage() { return _fireDamage; }
+	
+	/**
+	 * Gets this Tower's firing rate.
+	 * @return This Tower's firing rate.
+	 */
 	public int getFireRate() { return _fireRate; }
+	
+	/**
+	 * Gets this Tower's fire radius.
+	 * @return This Tower's fire radius.
+	 */
 	public int getFireRange() { return _fireRange; }
+	
+	/**
+	 * Gets this Tower's x-coordinate.
+	 * @return This Tower's x-coordinate.
+	 */
 	public int getX() { return _x; }
+	
+	/**
+	 * Gets this Tower's y-coordinate.
+	 * @return This Tower's y-coordinate.
+	 */
 	public int getY() { return _y; }
 	
 	
@@ -47,7 +70,7 @@ public abstract class Tower {
 	 * Determines whether this Tower reaches a given coordinate.
 	 * @param x The target's x position.
 	 * @param y The target's y position.
-	 * @return Whether this tower's projectiles reach the given coordinates.
+	 * @return Whether this tower's projectiles will reach the given coordinate.
 	 */
 	public boolean reaches(int x, int y) {
 		double distance = Math.sqrt( Math.pow(_x-x,2) + Math.pow(_y-y, 2) );
@@ -58,7 +81,7 @@ public abstract class Tower {
 	 * Determines whether this Tower reaches a given coordinate.
 	 * @param x The target's x position.
 	 * @param y The target's y position.
-	 * @return Whether this tower's projectiles reach the given coordinates.
+	 * @return Whether this tower's projectiles will reach the given coordinate.
 	 */
 	public boolean reaches(double x, double y) {
 		double distance = Math.sqrt( Math.pow(_x-x,2) + Math.pow(_y-y, 2) );

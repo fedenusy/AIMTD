@@ -100,20 +100,10 @@ public class Map {
 	
 	///// Public methods /////
 	/**
-	 * Determines the type of tile at the specified coordinate.
-	 * @param x The x coordinate.
-	 * @param y The y coordinate.
-	 * @return 0 if this is a Field tile, 1 if this is a Road tile, 2 if this is an Objective tile,
-	 * 8 if this is a rock Tile, or -1 if the coordinate is out of bounds.
+	 * Gets a random field-type Tile. This is a convenience method for the Monte Carlo Simulator; 
+	 * game developers should ignore.
+	 * @return A random field-type Tile in the Map.
 	 */
-	public int getTileType(int x, int y) {
-		Tile tile = getTile(x, y);
-		if (tile==null) return -1;
-		else if (tile.isObjective()) return 2;
-		else if (tile.isWalkable()) return 1;
-		else return 8;
-	}
-	
 	public Tile getRandomFieldTile() {
 		Tile randomFieldTile = null;
 		while (randomFieldTile==null) {

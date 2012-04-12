@@ -55,19 +55,58 @@ public abstract class Monster {
 	
 	
 	///// Getter methods /////
+	/**
+	 * Gets this Monster's current x-coordinate on the TD Map.
+	 * @return This Monster's current x-coordinate.
+	 */
 	public float getX() { return _x; }
+	
+	/**
+	 * Gets this Monster's current y-coordinate on the TD Map.
+	 * @return This Monster's current y-coordinate.
+	 */
 	public float getY() { return _y; }
+	
+	/**
+	 * Gets this Monster's current amount of remaining health points.
+	 * @return This Monster's current amount of remaining health points.
+	 */
 	public int getHp() { return _hp; }
+	
+	/**
+	 * Whether this Monster has reached one of the Map objectives based on its coordinates.
+	 * @return true if the Monster has reached on of the Map objectives, false otherwise.
+	 */
 	public boolean reachedObjective() { return _reachedObjective; }
+	
+	/**
+	 * Convenience method for getting the Monster's approximate x-coordinate as an int.
+	 * @return This Monster's approximate x-coordinate.
+	 */
 	public int getRoundedX() { return Math.round(_x); }
+	
+	/**
+	 * Convenience method for getting the Monster's approximate x-coordinate as an int.
+	 * @return This Monster's approximate x-coordinate.
+	 */
 	public int getRoundedY() { return Math.round(_y); }
+	
+	/**
+	 * Gets this Monster's speed.
+	 * @return This Monster's speed.
+	 */
 	public int getSpeed() { return _moveSpeed; }
 	
+	/**
+	 * Gets this Monster's intelligence level.
+	 * @return This Monster's intelligence level.
+	 */
 	int getIntelligenceLevel() { return _intelligenceLevel; }
 	
 	
 	///// Setter methods /////
 	void setReachedObjective(boolean reachedObjective) { _reachedObjective = reachedObjective; }
+	
 	/**
 	 * Sets the Monster's health points to the given value.
 	 * @param hp The Monster's new amount of health points.
@@ -78,7 +117,10 @@ public abstract class Monster {
 	///// Public methods /////
 	/**
 	 * Adds a waypoint to the Monster's path. Monsters will try to reach waypoints in the order they were
-	 * added before attempting to reach OBJECTIVE tiles.
+	 * added before attempting to reach any of the objective coordinates on the Map. If the waypoints are 
+	 * reachable, waypoint coordinates will be treated as if they were objectives - in other words, the 
+	 * Monster will use its corresponding intelligence level's movement patterns to reach each waypoint 
+	 * before trying to reach any of the objective coordinates on the map.
 	 * @param x The waypoint's x-coordinate.
 	 * @param y The waypoint's y-coordinate.
 	 */
@@ -96,7 +138,7 @@ public abstract class Monster {
 	}
 	
 	/**
-	 * Decreases this Monster's HP by a determined amount.
+	 * Convenience method that decreases this Monster's HP by a determined amount.
 	 * @param dmg The amount this monster's hit points should decrease by.
 	 */
 	public void damage(int dmg) {
