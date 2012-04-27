@@ -110,6 +110,7 @@ public class Map {
 			int x = (int) Math.floor(Math.random() * _tiles.length);
 			int y = (int) Math.floor(Math.random() * _tiles[0].length);
 			randomFieldTile = getTile(x, y);
+			if (!randomFieldTile.isField()) randomFieldTile = null;
 		}
 		return randomFieldTile;
 	}

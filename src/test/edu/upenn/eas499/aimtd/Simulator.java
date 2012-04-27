@@ -34,23 +34,26 @@ public class Simulator {
 		int intLevel = new Integer(args[1]);
 		
 		ArrayList<Integer> results = new ArrayList<Integer>();
+		ArrayList<Integer> numTicks = new ArrayList<Integer>();
 		for (int i=0; i<numGames; i++) {
 			System.out.print("Beginning simulation #" + (i+1) + "... ");
 			
 			Coordinator coordinator = new Coordinator(_map);
 			SimulatedPlayer player = new SimulatedPlayer(coordinator, _map);
-			simulateGame(coordinator, player, intLevel);
+			int ticks = simulateGame(coordinator, player, intLevel);
+			
+			numTicks.add(ticks);
 			
 			if (player.hasLives()) results.add(player.getLives());
 			else results.add(0);
 			
-			System.out.println(player.getLives() + " lives left.");
+			System.out.println(player.getLives() + " lives left and the simulation took " + ticks + " ticks.");
 		}
 		
-		printSummary(results, numGames);
+		printSummary(results, numGames, numTicks);
 	}
 	
-	private static void simulateGame(Coordinator coordinator, SimulatedPlayer player, int intLevel) {
+	private static int simulateGame(Coordinator coordinator, SimulatedPlayer player, int intLevel) {
 		for (int i=0; i<50; i++) {
 			Monster monster1 = new MonsterImpl(1, 0, 100, 20, intLevel); // Top left starting point
 			Monster monster2 = new MonsterImpl(17, 0, 75, 32, intLevel); // Top right starting point
@@ -61,11 +64,14 @@ public class Simulator {
 			coordinator.tick();
 		}
 		
+		int numTurns = 0;
 		do {
+			numTurns++;
 			player.tick();
 			coordinator.tick();
 		} while (!coordinator.getActiveMonsters().isEmpty() && player.hasLives());
 		player.tick();
+		return numTurns;
 	}
 	
 	private static Map _map = new Map(new int[][]{	{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
@@ -89,7 +95,7 @@ public class Simulator {
 													{0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
 													{0,2,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2} });
 	
-	public static void printSummary(ArrayList<Integer> results, int numGames) {
+	public static void printSummary(ArrayList<Integer> results, int numGames, ArrayList<Integer> ticks) {
 		System.out.println();
 		System.out.println("##### SUMMARY STATISTICS #####");
 		System.out.println("Number of simulations: " + numGames);
@@ -110,7 +116,17 @@ public class Simulator {
 		double stDev = 0.0;
 		for (int lives : results) stDev += Math.pow(lives - avgLives, 2);
 		stDev = Math.sqrt(stDev / (results.size()-1));
-		System.out.println("Standard deviation: " + stDev);
+		System.out.println("Standard deviation: " + stDev +"\n");
+		
+		double avgTicks = 0.0;
+		for (int tick : ticks) avgTicks += tick;
+		avgTicks = avgTicks / numGames;
+		System.out.println("Average ticks: " + avgTicks);
+		
+		stDev = 0.0;
+		for (int tick : ticks) stDev += Math.pow(tick - avgTicks, 2);
+		stDev = Math.sqrt(stDev / (ticks.size()-1));
+		System.out.println("Standard deviation: " + stDev +"\n");
 	}
 	
 }

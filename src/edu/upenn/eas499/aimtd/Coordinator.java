@@ -166,6 +166,6 @@ public class Coordinator {
 	 * their ability to draw Tower damage as they traverse a given path.
 	 */
 	private void groupTacticMove(Monster monster) {
-		
+		//TODO
 	}
 }
